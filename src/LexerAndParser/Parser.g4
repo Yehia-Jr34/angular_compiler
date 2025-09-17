@@ -76,7 +76,7 @@ loops
     ;
 
 if
-    : If OpenParen expr+ CloseParen statement (Else statement)* #IfStmt
+    : If OpenParen expr+ CloseParen block (Else block) #IfStmt
     ;
 
 for
@@ -92,7 +92,7 @@ while
     ;
 
 do
-    : Do block while #DoStmt
+    : Do block While OpenParen expr+ CloseParen #DoStmt
     ;
 
 consoleLog
@@ -107,11 +107,7 @@ decl
     ;
 
 variableDecl
-    : declTypes identifier_ Assign (anyLiteral | expr)
-    ;
-
-declTypes
-    : (Var | Let | Const) #Decltype
+    : (Var | Let | Const) identifier_ Assign (anyLiteral | expr)
     ;
 
 variableTypeDecl
@@ -168,7 +164,7 @@ identifier_
     ;
 
 arrayIndex
-    : OpenBracket expr CloseBracket #ArrayIndexStmt
+    : OpenBracket expr (Comma expr )* CloseBracket #ArrayIndexStmt
     ;
 
 /* ======================== 10. Literals ======================== */
@@ -222,11 +218,11 @@ arrowFunctionDecleration
     ;
 
 functionBody
-    : block | expr
+    : block
     ;
 
 functionParameters
-    : OpenParen (variableFunctionSingleArgument? (Comma+ variableFunctionSingleArgument)*) CloseParen #Funcpara
+    : OpenParen (variableFunctionSingleArgument? (Comma variableFunctionSingleArgument)*) CloseParen #Funcpara
     ;
 
 variableFunctionSingleArgument
@@ -239,7 +235,7 @@ constructor
     ;
 
 injectableFunctionParameters
-    : OpenParen (injectableVariableFunctionSingleArgument? (Comma+ injectableVariableFunctionSingleArgument)*) CloseParen #InjecFuncPara
+    : OpenParen (injectableVariableFunctionSingleArgument? (Comma+ injectableVariableFunctionSingleArgument)*)? CloseParen #InjecFuncPara
     ;
 
 injectableVariableFunctionSingleArgument
@@ -259,12 +255,8 @@ html
 
 htmlContent
     : htmlElement
-    | text
+    | Identifier
     | (OpenBrace OpenBrace interpolationValue CloseBrace CloseBrace)
-    ;
-
-text
-    : Identifier #TextStmt
     ;
 
 interpolationValue
