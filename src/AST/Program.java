@@ -11,7 +11,7 @@ import java.util.List;
 public class Program {
     private List<ImportStatement> imports;
     private List<StoreDec> stores;
-    private List<ComponentDecorator> components;
+    private ComponentDecorator component;
     private Identifier className;
     private List<Statement> statements;
 
@@ -31,12 +31,12 @@ public class Program {
         this.stores = stores;
     }
 
-    public List<ComponentDecorator> getComponents() {
-        return components;
+    public ComponentDecorator getComponent() {
+        return component;
     }
 
-    public void setComponents(List<ComponentDecorator> components) {
-        this.components = components;
+    public void setComponent(ComponentDecorator component) {
+        this.component = component;
     }
 
     public Identifier getClassName() {
@@ -63,10 +63,6 @@ public class Program {
         this.statements = statements;
     }
 
-    public void addComponent(ComponentDecorator component) {
-        components.add(component);
-    }
-
     public void addStatement(Statement statement) {
         statements.add(statement);
     }
@@ -76,7 +72,7 @@ public class Program {
         return "Program { " +
                 "imports = " + (imports != null ? imports : "[]") +
                 ", stores = " + (stores != null ? stores : "[]") +
-                ", components = " + (components != null ? components : "[]") +
+                ", components = " + (component != null ? component : "") +
                 ", className = '" + (className != null ? className : "") + '\'' +
                 ", statements = " + (statements != null ? statements : "[]") +
                 " }";

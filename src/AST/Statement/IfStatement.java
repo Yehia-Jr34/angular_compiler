@@ -1,6 +1,7 @@
 package AST.Statement;
 
 import AST.Block;
+import AST.Expr.Expr;
 
 import java.util.List;
 
@@ -31,6 +32,10 @@ public class IfStatement {
 
     public void setElseBlock(Block elseBlock) {
         this.elseBlock = elseBlock;
+    }
+
+    public void addExpr(Expr expr) {
+        exprs.add(expr);
     }
 
     @Override

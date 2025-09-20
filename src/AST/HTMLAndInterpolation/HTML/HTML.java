@@ -13,6 +13,10 @@ public class HTML {
         this.contents = contents;
     }
 
+    public void addContent(HtmlContent content) {
+        contents.add(content);
+    }
+
     @Override
     public String toString() {
         return "HTML { " +

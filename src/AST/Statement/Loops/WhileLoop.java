@@ -1,20 +1,21 @@
 package AST.Statement.Loops;
 
 import AST.Block;
+import AST.Expr.Expr;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class WhileLoop {
-    private List<Expr> exprs = new ArrayList<Expr>();
+    private Expr expr = new Expr();
     private Block block;
 
-    public List<Expr> getExprs() {
-        return exprs;
+    public Expr getExpr() {
+        return expr;
     }
 
-    public void setExprs(List<Expr> exprs) {
-        this.exprs = exprs;
+    public void setExpr(Expr expr) {
+        this.expr = expr;
     }
 
     public Block getBlock() {
@@ -25,14 +26,10 @@ public class WhileLoop {
         this.block = block;
     }
 
-    public void addExpr(Expr expr) {
-        exprs.add(expr);
-    }
-
     @Override
     public String toString() {
         return "WhileLoop { " +
-                "exprs = " + exprs +
+                "expr = " + expr +
                 ", block = " + block +
                 '}';
     }

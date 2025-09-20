@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SelfClosingTag {
+    private String tag;
     private List<BoundAttribute> boundAttributes = new ArrayList<>();
     private List<Attribute> attributes = new ArrayList<>();
     private List<EventBinding> eventBindings = new ArrayList<>();
@@ -48,10 +49,19 @@ public class SelfClosingTag {
         this.eventBindings.add(eventBinding);
     }
 
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
     @Override
     public String toString() {
         return "SelfClosingTag { " +
-                "boundAttributes = " + boundAttributes +
+                "tag='" + tag + '\'' +
+                ", boundAttributes = " + boundAttributes +
                 ", attributes = " + attributes +
                 ", eventBindings = " + eventBindings +
                 '}';

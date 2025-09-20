@@ -9,7 +9,7 @@ prog
 
 /* ======================== 2. Import Statements ======================== */
 importStatement
-    : Import ((OpenBrace identifier_ CloseBrace) | identifier_) From StringLiteral SemiColon? #Import
+    : Import ((OpenBrace identifier_ CloseBrace) | identifier_) From StringLiteral SemiColon?
     ;
 
 /* ======================== 3. State Management ======================== */
@@ -55,20 +55,20 @@ selectorDecl
 
 /* ======================== 4. Component Declaration ======================== */
 componentDecorator
-    : identifier_ OpenParen compoenentObject CloseParen #ComponentDecoratorStmt
+    : identifier_ OpenParen compoenentObject CloseParen
     ;
 
 compoenentObject
-    : OpenBrace Selector Colon StringLiteral Comma Template Colon html CloseBrace #Componentobj
+    : OpenBrace Selector Colon StringLiteral Comma Template Colon html CloseBrace
     ;
 
 /* ======================== 5. Class Body Statements ======================== */
 statement
-    : (block | decl | expr | loops | if | constructor | consoleLog) SemiColon? #StatementStmt
+    : (block | decl | expr | loops | if | constructor | consoleLog) SemiColon?
     ;
 
 block
-    : OpenBrace statement* CloseBrace #BlockStmt
+    : OpenBrace statement* CloseBrace
     ;
 
 loops
@@ -76,34 +76,34 @@ loops
     ;
 
 if
-    : If OpenParen expr+ CloseParen block (Else block) #IfStmt
+    : If OpenParen expr+ CloseParen block (Else block)?
     ;
 
 for
-    : For OpenParen forParameters CloseParen block #ForStmt
+    : For OpenParen forParameters CloseParen block
     ;
 
 forParameters
-    : variableDecl? SemiColon expr? SemiColon expr? #Forpara
+    : variableDecl? SemiColon expr? SemiColon expr?
     ;
 
 while
-    : While OpenParen expr+ CloseParen block #WhileStmt
+    : While OpenParen expr CloseParen block
     ;
 
 do
-    : Do block While OpenParen expr+ CloseParen #DoStmt
+    : Do block While OpenParen expr CloseParen
     ;
 
 consoleLog
-    : Console Dot Log OpenParen expr CloseParen #ConsoleLogStmt
+    : Console Dot Log OpenParen expr CloseParen
     ;
 
 /* ======================== 6. Variable & Type Declarations ======================== */
 decl
-    : variableDecl                  #VariableDecla
-    | variableTypeDecl              #VariableTypeDecla
-    | normalFunctionDecleration     #NormalFunction
+    : variableDecl
+    | variableTypeDecl
+    | normalFunctionDecleration
     ;
 
 variableDecl
@@ -115,40 +115,40 @@ variableTypeDecl
   ;
 
 dataTypes
-    : (Number | String | Boolean | Any) #DataTypesStmt
+    : (Number | String | Boolean | Any)
     ;
 
 /* ======================== 7. Expressions & Initialization ======================== */
 initialize
-    : identifier_ Assign (expr | anyLiteral) #Int
+    : identifier_ Assign (expr | anyLiteral)
     ;
 
 expr
-    : functionCall                 #FunccallExpr
-    | arrayLiteral                 #ArrliteralExpr
-    | objectLiteral                #ObjliteralExpr
-    | arrowFunctionDecleration     #Arrfundec
-    | StringLiteral                #Strliteral
-    | arithmeticExpr               #Arthexp
-    | expr PlusPlus                #Plusplus
-    | expr MinusMinus              #Minusminus
-    | initialize                   #Intialize
-    | return                       #Ret
-    | Break                        #Break
-    | Continue                     #Continue
-    | identifier_                  #Identi
+    : functionCall
+    | arrayLiteral
+    | objectLiteral
+    | arrowFunctionDecleration
+    | StringLiteral
+    | arithmeticExpr
+    | expr PlusPlus
+    | expr MinusMinus
+    | initialize
+    | return
+    | Break
+    | Continue
+    | identifier_
     ;
 
 return
-    : Return expr? #ReturnStmt
+    : Return expr?
     ;
 
 /* ======================== 8. Arithmetic Expressions ======================== */
 arithmeticExpr
-    : arithmeticExpr operartor arithmeticExpr #Arthimaticexpr
-    | DecimalLiteral                          #Decllit
-    | StringLiteral                           #Strlit
-    | identifier_                             #Iden
+    : arithmeticExpr operartor arithmeticExpr
+    | DecimalLiteral
+    | StringLiteral
+    | identifier_
     ;
 
 operartor
@@ -160,53 +160,53 @@ operartor
 
 /* ======================== 9. Identifiers & Indexing ======================== */
 identifier_
-    : Identifier arrayIndex? #Identifier__
+    : Identifier arrayIndex?
     ;
 
 arrayIndex
-    : OpenBracket expr (Comma expr )* CloseBracket #ArrayIndexStmt
+    : OpenBracket expr (Comma expr )* CloseBracket
     ;
 
 /* ======================== 10. Literals ======================== */
 anyLiteral
-    : arrayLiteral   #Arraylit
-    | objectLiteral  #Objectlit
-    | StringLiteral  #Stringlit
-    | BooleanLiteral #Booleanlet
-    | DecimalLiteral #Decimallit
-    | NullLiteral    #Nulllet
+    : arrayLiteral
+    | objectLiteral
+    | StringLiteral
+    | BooleanLiteral
+    | DecimalLiteral
+    | NullLiteral
     ;
 
 arrayLiteral
-    : OpenBracket arrayList CloseBracket #ArrayLiteralStmt
+    : OpenBracket arrayList CloseBracket
     ;
 
 arrayList
-    : arrayElement? (Comma+ arrayElement)* #ArrayListStmt
+    : arrayElement? (Comma arrayElement)*
     ;
 
 arrayElement
-    : anyLiteral   #AnyLiteralStmt
-    | expr         #Exper
-    | identifier_  #Identifier
+    : anyLiteral
+    | expr
+    | identifier_
     ;
 
 objectLiteral
-    : OpenBrace objectBody CloseBrace #ObjectLitStmt
+    : OpenBrace objectBody CloseBrace
     ;
 
 objectBody
-    : objectKeyValue? (Comma objectKeyValue)* #ObjectBodyStmt
+    : objectKeyValue? (Comma objectKeyValue)*
     ;
 
 objectKeyValue
-    : (Identifier | StringLiteral | DecimalLiteral) Colon expr #ObjectKeyValueStmt
+    : (Identifier | StringLiteral | DecimalLiteral) Colon expr
     ;
 
 /* ======================== 11. Function Declarations ======================== */
 functionDecl
-    : normalFunctionDecleration #Normalfuncdecl
-    | arrowFunctionDecleration  #Arrowfuncdecla
+    : normalFunctionDecleration
+    | arrowFunctionDecleration
     ;
 
 normalFunctionDecleration
@@ -222,35 +222,35 @@ functionBody
     ;
 
 functionParameters
-    : OpenParen (variableFunctionSingleArgument? (Comma variableFunctionSingleArgument)*) CloseParen #Funcpara
+    : OpenParen (variableFunctionSingleArgument? (Comma variableFunctionSingleArgument)*) CloseParen
     ;
 
 variableFunctionSingleArgument
-    : identifier_ (Colon dataTypes (OpenBracket CloseBracket)? )? #Varsingarg
+    : identifier_ (Colon dataTypes (OpenBracket CloseBracket)? )?
     ;
 
 /* ======================== 12. Injectable Constructor Parameters ======================== */
 constructor
-    : Constructor injectableFunctionParameters block #ConstructorStmt
+    : Constructor injectableFunctionParameters block
     ;
 
 injectableFunctionParameters
-    : OpenParen (injectableVariableFunctionSingleArgument? (Comma+ injectableVariableFunctionSingleArgument)*)? CloseParen #InjecFuncPara
+    : OpenParen (injectableVariableFunctionSingleArgument? (Comma+ injectableVariableFunctionSingleArgument)*)? CloseParen
     ;
 
 injectableVariableFunctionSingleArgument
-    : accessModifires identifier_ Colon dataTypes #InjecVarFuncSiArg
+    : accessModifires identifier_ Colon dataTypes
     ;
 
 accessModifires
-    : Public   #Public
-    | Private  #Private
-    | Protected#Protocted
+    : Public
+    | Private
+    | Protected
     ;
 
 /* ======================== 13. HTML & Interpolation ======================== */
 html
-    : (htmlContent)* #Htmlcont
+    : (htmlContent)*
     ;
 
 htmlContent
@@ -275,11 +275,11 @@ htmlElement
     ;
 
 htmlTag
-    : Identifier #HtmlTagStmt
+    : Identifier
     ;
 
 openTag
-    : LessThan htmlTag structuralDirectives? (boundAttribute | attribute | eventBinding)* MoreThan #OpenTagStmt
+    : LessThan htmlTag structuralDirectives? (boundAttribute | attribute | eventBinding)* MoreThan
     ;
 
 selfClosingTag
@@ -287,12 +287,12 @@ selfClosingTag
     ;
 
 closeTag
-    : LessThan Divide htmlTag MoreThan #CloseTagStmt
+    : LessThan Divide htmlTag MoreThan
     ;
 
 structuralDirectives
-    : forDirective #Ngfor
-    | ifDirective  #Ngif
+    : forDirective
+    | ifDirective
     ;
 
 forDirective

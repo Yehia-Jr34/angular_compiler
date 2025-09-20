@@ -1,6 +1,7 @@
 package AST.Statement.Loops;
 
 import AST.Dec.Variable.VariableDecl;
+import AST.Expr.Expr;
 
 public class ForParameter {
     private VariableDecl varDecl = null;

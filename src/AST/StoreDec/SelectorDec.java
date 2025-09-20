@@ -4,15 +4,15 @@ import AST.Dec.Function.ArrowFunctionDec;
 import AST.Identifier.Identifier;
 
 public class SelectorDec {
-    private Identifier selector = null;
+    private Identifier identifier = null;
     private ArrowFunctionDec arrowFunction = null;
 
-    public Identifier getSelector() {
-        return selector;
+    public Identifier getIdentifier() {
+        return identifier;
     }
 
-    public void setSelector(Identifier selector) {
-        this.selector = selector;
+    public void setIdentifier(Identifier identifier) {
+        this.identifier = identifier;
     }
 
     public ArrowFunctionDec getArrowFunction() {
@@ -26,7 +26,7 @@ public class SelectorDec {
     @Override
     public String toString() {
         return "SelectorDec { " +
-                "selector = " + selector +
+                "identifier = " + identifier +
                 ", arrowFunction = " + arrowFunction +
                 '}';
     }

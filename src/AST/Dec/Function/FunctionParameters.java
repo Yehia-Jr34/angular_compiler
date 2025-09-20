@@ -13,6 +13,10 @@ public class FunctionParameters {
         this.parameters = parameters;
     }
 
+    public void addArgument(VariableFunctionSingleArgument argument) {
+        this.parameters.add(argument);
+    }
+
     @Override
     public String toString() {
         return "FunctionParameters { " +

@@ -7,7 +7,7 @@ public class AnyLiteral {
     private ArrayLiteral arrayLiteral = null;
     private ObjectLiteral objectLiteral = null;
     private String stringLiteral = null;
-    private boolean boolLiteral = false;
+    private String boolLiteral = null;
     private String DecimalLiteral = null;
     private String nullLiteral = null;
 
@@ -35,11 +35,11 @@ public class AnyLiteral {
         this.stringLiteral = stringLiteral;
     }
 
-    public boolean isBoolLiteral() {
+    public String getBoolLiteral() {
         return boolLiteral;
     }
 
-    public void setBoolLiteral(boolean boolLiteral) {
+    public void setBoolLiteral(String boolLiteral) {
         this.boolLiteral = boolLiteral;
     }
 
@@ -65,7 +65,7 @@ public class AnyLiteral {
                 "arrayLiteral=" + (arrayLiteral != null ? arrayLiteral : "[]") +
                 ", objectLiteral=" + (objectLiteral != null ? objectLiteral : "{}") +
                 ", stringLiteral='" + (stringLiteral != null ? stringLiteral : "") + '\'' +
-                ", boolLiteral=" + (boolLiteral ? boolLiteral : "Not assigned") +
+                ", boolLiteral='" + (boolLiteral != null ? boolLiteral : "") + '\'' +
                 ", DecimalLiteral='" + (DecimalLiteral != null ? DecimalLiteral : "") + '\'' +
                 ", nullLiteral='" + (nullLiteral != null ? nullLiteral : "null") + '\'' +
                 '}';
