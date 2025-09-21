@@ -1,9 +1,10 @@
 package AST.StoreDec;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StateSection {
-    List<StoreStateField> fields;
+    List<StoreStateField> fields = new ArrayList<StoreStateField>();
 
     public List<StoreStateField> getFields() {
         return fields;

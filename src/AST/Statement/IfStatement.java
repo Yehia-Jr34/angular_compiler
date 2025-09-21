@@ -3,10 +3,11 @@ package AST.Statement;
 import AST.Block;
 import AST.Expr.Expr;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class IfStatement {
-    private List<Expr> exprs;
+    private List<Expr> exprs = new ArrayList<Expr>();
     private AST.Block block;
     private AST.Block elseBlock;
 

@@ -1,9 +1,10 @@
 package AST.InjectableConstructorParameters;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class InjectableFunctionParameters {
-    private List<InjectableVariableFunctionSingleArgument> arguments;
+    private List<InjectableVariableFunctionSingleArgument> arguments = new ArrayList<>();
 
     public List<InjectableVariableFunctionSingleArgument> getArguments() {
         return arguments;

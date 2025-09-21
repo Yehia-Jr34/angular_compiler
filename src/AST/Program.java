@@ -6,14 +6,15 @@ import AST.Import.ImportStatement;
 import AST.Statement.Statement;
 import AST.StoreDec.StoreDec;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Program {
-    private List<ImportStatement> imports;
-    private List<StoreDec> stores;
+    private List<ImportStatement> imports = new ArrayList<ImportStatement>();
+    private List<StoreDec> stores = new ArrayList<>();
     private ComponentDecorator component;
     private Identifier className;
-    private List<Statement> statements;
+    private List<Statement> statements = new ArrayList<>();
 
     public List<ImportStatement> getImports() {
         return imports;

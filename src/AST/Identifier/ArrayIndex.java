@@ -2,10 +2,11 @@ package AST.Identifier;
 
 import AST.Expr.Expr;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ArrayIndex {
-    private List<Expr> index;
+    private List<Expr> index = new ArrayList<Expr>();
 
     public List<Expr> getIndex() {
         return index;

@@ -5,7 +5,7 @@ import AST.Identifier.Identifier;
 
 public class ReducerRule {
     private Identifier identifier;
-    public ArrowFunctionDec arrowFunctionDec;
+    private ArrowFunctionDec arrowFunctionDec;
 
     public Identifier getIdentifier() {
         return identifier;

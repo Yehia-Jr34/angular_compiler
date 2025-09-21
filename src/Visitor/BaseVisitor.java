@@ -47,14 +47,13 @@ import AST.Statement.IfStatement;
 import AST.Statement.Loops.*;
 import AST.Statement.Statement;
 import AST.StoreDec.*;
-import LexerAndParser.Parser;
-import LexerAndParser.ParserBaseVisitor;
+import LexerAndParser.AngularParser;
+import LexerAndParser.AngularParserBaseVisitor;
+import LexerAndParser.AngularParser;
 
-import java.beans.Expression;
-
-public class BaseVisitor extends ParserBaseVisitor {
+public class BaseVisitor extends AngularParserBaseVisitor {
     @Override
-    public Program visitProg(Parser.ProgContext ctx) {
+    public Program visitProg(AngularParser.ProgContext ctx) {
         Program object = new Program();
 
         for (int i = 0; i < ctx.importStatement().size(); i++) {
@@ -82,7 +81,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public ImportStatement visitImportStatement(Parser.ImportStatementContext ctx) {
+    public ImportStatement visitImportStatement(AngularParser.ImportStatementContext ctx) {
         ImportStatement object = new ImportStatement();
 
         Identifier child1 = visitIdentifier_(ctx.identifier_());
@@ -95,7 +94,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public StoreDec visitStoreDecl(Parser.StoreDeclContext ctx) {
+    public StoreDec visitStoreDecl(AngularParser.StoreDeclContext ctx) {
         StoreDec object = new StoreDec();
 
         Identifier child1 = visitIdentifier_(ctx.identifier_());
@@ -108,7 +107,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public StoreBody visitStoreBody(Parser.StoreBodyContext ctx) {
+    public StoreBody visitStoreBody(AngularParser.StoreBodyContext ctx) {
         StoreBody object = new StoreBody();
 
         StateSection child1 = visitStateSection(ctx.stateSection());
@@ -133,7 +132,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public StateSection visitStateSection(Parser.StateSectionContext ctx) {
+    public StateSection visitStateSection(AngularParser.StateSectionContext ctx) {
         StateSection object = new StateSection();
 
         for (int i = 0; i < ctx.storeStateField().size(); i++) {
@@ -145,7 +144,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public StoreStateField visitStoreStateField(Parser.StoreStateFieldContext ctx) {
+    public StoreStateField visitStoreStateField(AngularParser.StoreStateFieldContext ctx) {
         StoreStateField object = new StoreStateField();
 
         Identifier child1 = visitIdentifier_(ctx.identifier_());
@@ -165,7 +164,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public ActionsSection visitActionsSection(Parser.ActionsSectionContext ctx) {
+    public ActionsSection visitActionsSection(AngularParser.ActionsSectionContext ctx) {
         ActionsSection object = new ActionsSection();
 
         for (int i = 0; i < ctx.actionDecl().size(); i++) {
@@ -177,7 +176,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public ActionDec visitActionDecl(Parser.ActionDeclContext ctx) {
+    public ActionDec visitActionDecl(AngularParser.ActionDeclContext ctx) {
         ActionDec object = new ActionDec();
 
         Identifier child1 = visitIdentifier_(ctx.identifier_());
@@ -190,7 +189,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public ReducerSection visitReducerSection(Parser.ReducerSectionContext ctx) {
+    public ReducerSection visitReducerSection(AngularParser.ReducerSectionContext ctx) {
         ReducerSection object = new ReducerSection();
 
         for (int i = 0; i < ctx.reducerRule().size(); i++) {
@@ -202,7 +201,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public ReducerRule visitReducerRule(Parser.ReducerRuleContext ctx) {
+    public ReducerRule visitReducerRule(AngularParser.ReducerRuleContext ctx) {
         ReducerRule object = new ReducerRule();
 
         Identifier child1 = visitIdentifier_(ctx.identifier_());
@@ -215,7 +214,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public SelectorsSection visitSelectorsSection(Parser.SelectorsSectionContext ctx) {
+    public SelectorsSection visitSelectorsSection(AngularParser.SelectorsSectionContext ctx) {
         SelectorsSection object = new SelectorsSection();
 
         for (int i = 0; i < ctx.selectorDecl().size(); i++) {
@@ -227,7 +226,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public SelectorDec visitSelectorDecl(Parser.SelectorDeclContext ctx) {
+    public SelectorDec visitSelectorDecl(AngularParser.SelectorDeclContext ctx) {
         SelectorDec object = new SelectorDec();
 
         Identifier child1 = visitIdentifier_(ctx.identifier_());
@@ -240,7 +239,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public ComponentDecorator visitComponentDecorator(Parser.ComponentDecoratorContext ctx) {
+    public ComponentDecorator visitComponentDecorator(AngularParser.ComponentDecoratorContext ctx) {
         ComponentDecorator object = new ComponentDecorator();
 
         Identifier child1 = visitIdentifier_(ctx.identifier_());
@@ -253,7 +252,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public ComponentObject visitCompoenentObject(Parser.CompoenentObjectContext ctx) {
+    public ComponentObject visitCompoenentObject(AngularParser.CompoenentObjectContext ctx) {
         ComponentObject object = new ComponentObject();
 
         String child1 = ctx.StringLiteral().getText();
@@ -266,7 +265,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public Statement visitStatement(Parser.StatementContext ctx) {
+    public Statement visitStatement(AngularParser.StatementContext ctx) {
         Statement object = new Statement();
 
         if (ctx.block() != null) {
@@ -296,7 +295,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public Block visitBlock(Parser.BlockContext ctx) {
+    public Block visitBlock(AngularParser.BlockContext ctx) {
         Block object = new Block();
 
         for (int i = 0; i < ctx.statement().size(); i++) {
@@ -308,7 +307,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public Loops visitLoops(Parser.LoopsContext ctx) {
+    public Loops visitLoops(AngularParser.LoopsContext ctx) {
         Loops object = new Loops();
 
         if (ctx.for_() != null) {
@@ -326,7 +325,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public IfStatement visitIf(Parser.IfContext ctx) {
+    public IfStatement visitIf(AngularParser.IfContext ctx) {
         IfStatement object = new IfStatement();
 
         for (int i = 0; i < ctx.expr().size(); i++) {
@@ -346,7 +345,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public ForLoop visitFor(Parser.ForContext ctx) {
+    public ForLoop visitFor(AngularParser.ForContext ctx) {
         ForLoop object = new ForLoop();
 
         ForParameter child1 = visitForParameters(ctx.forParameters());
@@ -359,7 +358,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public ForParameter visitForParameters(Parser.ForParametersContext ctx) {
+    public ForParameter visitForParameters(AngularParser.ForParametersContext ctx) {
         ForParameter object = new ForParameter();
 
         if (ctx.variableDecl() != null) {
@@ -381,7 +380,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public WhileLoop visitWhile(Parser.WhileContext ctx) {
+    public WhileLoop visitWhile(AngularParser.WhileContext ctx) {
         WhileLoop object = new WhileLoop();
 
         Expr child1 = visitExpr(ctx.expr());
@@ -394,7 +393,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public DoLoop visitDo(Parser.DoContext ctx) {
+    public DoLoop visitDo(AngularParser.DoContext ctx) {
         DoLoop object = new DoLoop();
 
         Block child1 = visitBlock(ctx.block());
@@ -407,7 +406,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public ConsoleLog visitConsoleLog(Parser.ConsoleLogContext ctx) {
+    public ConsoleLog visitConsoleLog(AngularParser.ConsoleLogContext ctx) {
         ConsoleLog object = new ConsoleLog();
 
         Expr child = visitExpr(ctx.expr());
@@ -417,7 +416,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public Dec visitDecl(Parser.DeclContext ctx) {
+    public Dec visitDecl(AngularParser.DeclContext ctx) {
         Dec object = new Dec();
 
         if (ctx.variableDecl() != null) {
@@ -435,7 +434,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public VariableDecl visitVariableDecl(Parser.VariableDeclContext ctx) {
+    public VariableDecl visitVariableDecl(AngularParser.VariableDeclContext ctx) {
         VariableDecl object = new VariableDecl();
 
         Identifier child1 = visitIdentifier_(ctx.identifier_());
@@ -453,7 +452,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public VariableTypeDecl visitVariableTypeDecl(Parser.VariableTypeDeclContext ctx) {
+    public VariableTypeDecl visitVariableTypeDecl(AngularParser.VariableTypeDeclContext ctx) {
         VariableTypeDecl object = new VariableTypeDecl();
 
         Identifier child1 = visitIdentifier_(ctx.identifier_());
@@ -474,7 +473,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public DataType visitDataTypes(Parser.DataTypesContext ctx) {
+    public DataType visitDataTypes(AngularParser.DataTypesContext ctx) {
         DataType object = new DataType();
 
         if (ctx.Number() != null) {
@@ -491,7 +490,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public Initialize visitInitialize(Parser.InitializeContext ctx) {
+    public Initialize visitInitialize(AngularParser.InitializeContext ctx) {
         Initialize object = new Initialize();
 
         Identifier child1 = visitIdentifier_(ctx.identifier_());
@@ -509,7 +508,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public Expr visitExpr(Parser.ExprContext ctx) {
+    public Expr visitExpr(AngularParser.ExprContext ctx) {
         Expr object = new Expr();
 
         if (ctx.functionCall() != null) {
@@ -554,7 +553,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public Return visitReturn(Parser.ReturnContext ctx) {
+    public Return visitReturn(AngularParser.ReturnContext ctx) {
         Return object = new Return();
 
         if (ctx.expr() != null) {
@@ -566,7 +565,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public ArithmeticExpr visitArithmeticExpr(Parser.ArithmeticExprContext ctx) {
+    public ArithmeticExpr visitArithmeticExpr(AngularParser.ArithmeticExprContext ctx) {
         ArithmeticExpr object = new ArithmeticExpr();
 
         if (ctx.identifier_() != null) {
@@ -591,7 +590,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public Operator visitOperartor(Parser.OperartorContext ctx) {
+    public Operator visitOperartor(AngularParser.OperartorContext ctx) {
         Operator object = new Operator();
 
         object.setOperator(ctx.getText());
@@ -600,7 +599,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public Identifier visitIdentifier_(Parser.Identifier_Context ctx) {
+    public Identifier visitIdentifier_(AngularParser.Identifier_Context ctx) {
         Identifier object = new Identifier();
 
         object.setName(ctx.Identifier().getText());
@@ -614,7 +613,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public ArrayIndex visitArrayIndex(Parser.ArrayIndexContext ctx) {
+    public ArrayIndex visitArrayIndex(AngularParser.ArrayIndexContext ctx) {
         ArrayIndex object = new ArrayIndex();
 
         for (int i = 0; i < ctx.expr().size(); i++) {
@@ -626,7 +625,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public AnyLiteral visitAnyLiteral(Parser.AnyLiteralContext ctx) {
+    public AnyLiteral visitAnyLiteral(AngularParser.AnyLiteralContext ctx) {
         AnyLiteral object = new AnyLiteral();
 
         if (ctx.arrayLiteral() != null) {
@@ -649,7 +648,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public ArrayLiteral visitArrayLiteral(Parser.ArrayLiteralContext ctx) {
+    public ArrayLiteral visitArrayLiteral(AngularParser.ArrayLiteralContext ctx) {
         ArrayLiteral object = new ArrayLiteral();
 
         ArrayList child = visitArrayList(ctx.arrayList());
@@ -659,7 +658,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public ArrayList visitArrayList(Parser.ArrayListContext ctx) {
+    public ArrayList visitArrayList(AngularParser.ArrayListContext ctx) {
         ArrayList object = new ArrayList();
 
         for (int i = 0; i < ctx.arrayElement().size(); i++) {
@@ -671,7 +670,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public ArrayElement visitArrayElement(Parser.ArrayElementContext ctx) {
+    public ArrayElement visitArrayElement(AngularParser.ArrayElementContext ctx) {
         ArrayElement object = new ArrayElement();
 
         if (ctx.anyLiteral() != null) {
@@ -689,7 +688,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public ObjectLiteral visitObjectLiteral(Parser.ObjectLiteralContext ctx) {
+    public ObjectLiteral visitObjectLiteral(AngularParser.ObjectLiteralContext ctx) {
         ObjectLiteral object = new ObjectLiteral();
 
         ObjectBody child = visitObjectBody(ctx.objectBody());
@@ -699,7 +698,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public ObjectBody visitObjectBody(Parser.ObjectBodyContext ctx) {
+    public ObjectBody visitObjectBody(AngularParser.ObjectBodyContext ctx) {
         ObjectBody object = new ObjectBody();
 
         for (int i = 0; i < ctx.objectKeyValue().size(); i++) {
@@ -711,7 +710,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public ObjectKeyValue visitObjectKeyValue(Parser.ObjectKeyValueContext ctx) {
+    public ObjectKeyValue visitObjectKeyValue(AngularParser.ObjectKeyValueContext ctx) {
         ObjectKeyValue object = new ObjectKeyValue();
 
         if (ctx.Identifier() != null) {
@@ -729,7 +728,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public FunctionDec visitFunctionDecl(Parser.FunctionDeclContext ctx) {
+    public FunctionDec visitFunctionDecl(AngularParser.FunctionDeclContext ctx) {
         FunctionDec object = new FunctionDec();
 
         if (ctx.normalFunctionDecleration() != null) {
@@ -744,7 +743,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public NormalFunctionDec visitNormalFunctionDecleration(Parser.NormalFunctionDeclerationContext ctx) {
+    public NormalFunctionDec visitNormalFunctionDecleration(AngularParser.NormalFunctionDeclerationContext ctx) {
         NormalFunctionDec object = new NormalFunctionDec();
 
         Identifier child1 = visitIdentifier_(ctx.identifier_());
@@ -760,7 +759,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public ArrowFunctionDec visitArrowFunctionDecleration(Parser.ArrowFunctionDeclerationContext ctx) {
+    public ArrowFunctionDec visitArrowFunctionDecleration(AngularParser.ArrowFunctionDeclerationContext ctx) {
         ArrowFunctionDec object = new ArrowFunctionDec();
 
         FunctionParameters child2 = visitFunctionParameters(ctx.functionParameters());
@@ -773,7 +772,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public FunctionBody visitFunctionBody(Parser.FunctionBodyContext ctx) {
+    public FunctionBody visitFunctionBody(AngularParser.FunctionBodyContext ctx) {
         FunctionBody object = new FunctionBody();
 
         Block child = visitBlock(ctx.block());
@@ -783,7 +782,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public FunctionParameters visitFunctionParameters(Parser.FunctionParametersContext ctx) {
+    public FunctionParameters visitFunctionParameters(AngularParser.FunctionParametersContext ctx) {
         FunctionParameters object = new FunctionParameters();
 
         if (ctx.variableFunctionSingleArgument() != null) {
@@ -797,20 +796,22 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public VariableFunctionSingleArgument visitVariableFunctionSingleArgument(Parser.VariableFunctionSingleArgumentContext ctx) {
+    public VariableFunctionSingleArgument visitVariableFunctionSingleArgument(AngularParser.VariableFunctionSingleArgumentContext ctx) {
         VariableFunctionSingleArgument object = new VariableFunctionSingleArgument();
 
         Identifier child1 = visitIdentifier_(ctx.identifier_());
         object.setIdentifier(child1);
 
-        DataType child2 = visitDataTypes(ctx.dataTypes());
-        object.setDataType(child2);
+        if (ctx.dataTypes() != null){
+            DataType child2 = visitDataTypes(ctx.dataTypes());
+            object.setDataType(child2);
+        }
 
         return object;
     }
 
     @Override
-    public Constructor visitConstructor(Parser.ConstructorContext ctx) {
+    public Constructor visitConstructor(AngularParser.ConstructorContext ctx) {
         Constructor object = new Constructor();
 
         InjectableFunctionParameters child1 = visitInjectableFunctionParameters(ctx.injectableFunctionParameters());
@@ -823,7 +824,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public InjectableFunctionParameters visitInjectableFunctionParameters(Parser.InjectableFunctionParametersContext ctx) {
+    public InjectableFunctionParameters visitInjectableFunctionParameters(AngularParser.InjectableFunctionParametersContext ctx) {
         InjectableFunctionParameters object = new InjectableFunctionParameters();
 
         if (ctx.injectableVariableFunctionSingleArgument() != null) {
@@ -837,7 +838,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public InjectableVariableFunctionSingleArgument visitInjectableVariableFunctionSingleArgument(Parser.InjectableVariableFunctionSingleArgumentContext ctx) {
+    public InjectableVariableFunctionSingleArgument visitInjectableVariableFunctionSingleArgument(AngularParser.InjectableVariableFunctionSingleArgumentContext ctx) {
         InjectableVariableFunctionSingleArgument object = new InjectableVariableFunctionSingleArgument();
 
         AccessModifiers child1 = visitAccessModifires(ctx.accessModifires());
@@ -853,7 +854,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public AccessModifiers visitAccessModifires(Parser.AccessModifiresContext ctx) {
+    public AccessModifiers visitAccessModifires(AngularParser.AccessModifiresContext ctx) {
         AccessModifiers object = new AccessModifiers();
 
         object.setModifier(ctx.getText());
@@ -862,7 +863,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public HTML visitHtml(Parser.HtmlContext ctx) {
+    public HTML visitHtml(AngularParser.HtmlContext ctx) {
         HTML object = new HTML();
 
         if (ctx.htmlContent() != null) {
@@ -876,7 +877,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public HtmlContent visitHtmlContent(Parser.HtmlContentContext ctx) {
+    public HtmlContent visitHtmlContent(AngularParser.HtmlContentContext ctx) {
         HtmlContent object = new HtmlContent();
 
         if (ctx.htmlElement() != null) {
@@ -893,7 +894,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public InterpolationValue visitInterpolationValue(Parser.InterpolationValueContext ctx) {
+    public InterpolationValue visitInterpolationValue(AngularParser.InterpolationValueContext ctx) {
         InterpolationValue object = new InterpolationValue();
 
         if (ctx.identifier_() != null) {
@@ -908,7 +909,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public IdentifierPath visitIdentifierPath(Parser.IdentifierPathContext ctx) {
+    public IdentifierPath visitIdentifierPath(AngularParser.IdentifierPathContext ctx) {
         IdentifierPath object = new IdentifierPath();
 
         for (int i = 0; i < ctx.identifier_().size(); i++) {
@@ -920,7 +921,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public HtmlElement visitHtmlElement(Parser.HtmlElementContext ctx) {
+    public HtmlElement visitHtmlElement(AngularParser.HtmlElementContext ctx) {
         HtmlElement object = new HtmlElement();
 
         if (ctx.selfClosingTag() != null) {
@@ -943,7 +944,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public HtmlTag visitHtmlTag(Parser.HtmlTagContext ctx) {
+    public HtmlTag visitHtmlTag(AngularParser.HtmlTagContext ctx) {
         HtmlTag object = new HtmlTag();
 
         object.setTag(ctx.getText());
@@ -952,7 +953,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public OpenTag visitOpenTag(Parser.OpenTagContext ctx) {
+    public OpenTag visitOpenTag(AngularParser.OpenTagContext ctx) {
         OpenTag object = new OpenTag();
 
         HtmlTag child1 = visitHtmlTag(ctx.htmlTag());
@@ -988,7 +989,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public SelfClosingTag visitSelfClosingTag(Parser.SelfClosingTagContext ctx) {
+    public SelfClosingTag visitSelfClosingTag(AngularParser.SelfClosingTagContext ctx) {
         SelfClosingTag object = new SelfClosingTag();
 
         object.setTag(ctx.Identifier().getText());
@@ -1018,7 +1019,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public CloseTag visitCloseTag(Parser.CloseTagContext ctx) {
+    public CloseTag visitCloseTag(AngularParser.CloseTagContext ctx) {
         CloseTag object = new CloseTag();
 
         HtmlTag child1 = visitHtmlTag(ctx.htmlTag());
@@ -1028,7 +1029,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public StructuralDirectives visitStructuralDirectives(Parser.StructuralDirectivesContext ctx) {
+    public StructuralDirectives visitStructuralDirectives(AngularParser.StructuralDirectivesContext ctx) {
         StructuralDirectives object = new StructuralDirectives();
 
         if (ctx.ifDirective() != null) {
@@ -1043,7 +1044,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public ForDirective visitForDirective(Parser.ForDirectiveContext ctx) {
+    public ForDirective visitForDirective(AngularParser.ForDirectiveContext ctx) {
         ForDirective object = new ForDirective();
 
         Identifier child1 = visitIdentifier_(ctx.identifier_(0));
@@ -1056,7 +1057,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public IfDirective visitIfDirective(Parser.IfDirectiveContext ctx) {
+    public IfDirective visitIfDirective(AngularParser.IfDirectiveContext ctx) {
         IfDirective object = new IfDirective();
 
         if (ctx.identifier_() != null) {
@@ -1071,7 +1072,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public Attribute visitAttribute(Parser.AttributeContext ctx) {
+    public Attribute visitAttribute(AngularParser.AttributeContext ctx) {
         Attribute object = new Attribute();
 
         AttributeName child1 = visitAttributeName(ctx.attributeName());
@@ -1084,7 +1085,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public AttributeName visitAttributeName(Parser.AttributeNameContext ctx) {
+    public AttributeName visitAttributeName(AngularParser.AttributeNameContext ctx) {
         AttributeName object = new AttributeName();
 
         object.setName(ctx.Identifier().getText());
@@ -1093,7 +1094,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public AttributeValue visitAttributeValue(Parser.AttributeValueContext ctx) {
+    public AttributeValue visitAttributeValue(AngularParser.AttributeValueContext ctx) {
         AttributeValue object = new AttributeValue();
 
         if (ctx.StringLiteral() != null) {
@@ -1107,7 +1108,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public BoundAttribute visitBoundAttribute(Parser.BoundAttributeContext ctx) {
+    public BoundAttribute visitBoundAttribute(AngularParser.BoundAttributeContext ctx) {
         BoundAttribute object = new BoundAttribute();
 
         AttributeName child1 = visitAttributeName(ctx.attributeName());
@@ -1120,7 +1121,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public EventName visitEventName(Parser.EventNameContext ctx) {
+    public EventName visitEventName(AngularParser.EventNameContext ctx) {
         EventName object = new EventName();
 
         object.setEventName(ctx.Identifier().getText());
@@ -1129,7 +1130,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public EventBinding visitEventBinding(Parser.EventBindingContext ctx) {
+    public EventBinding visitEventBinding(AngularParser.EventBindingContext ctx) {
         EventBinding object = new EventBinding();
 
         EventName child1 = visitEventName(ctx.eventName());
@@ -1147,7 +1148,7 @@ public class BaseVisitor extends ParserBaseVisitor {
     }
 
     @Override
-    public FunctionCall visitFunctionCall(Parser.FunctionCallContext ctx) {
+    public FunctionCall visitFunctionCall(AngularParser.FunctionCallContext ctx) {
         FunctionCall object = new FunctionCall();
 
         if (ctx.identifierPath() != null) {

@@ -1,6 +1,6 @@
-parser grammar Parser;
+parser grammar AngularParser;
 
-options { tokenVocab = Lexer; }
+options { tokenVocab = AngularLexer; }
 
 /* ======================== 1. Program Entry ======================== */
 prog

@@ -1,9 +1,10 @@
 package AST.StoreDec;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ActionsSection {
-    private List<ActionDec> actions;
+    private List<ActionDec> actions = new ArrayList<ActionDec>();
 
     public List<ActionDec> getActions() {
         return actions;

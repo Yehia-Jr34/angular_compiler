@@ -1,0 +1,38 @@
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'my-app',
+  template: <div>
+    <style>
+      .chip{display:inline-block;padding:8px 14px;border:1px solid #ddd;border-radius:10px;margin-right:8px}
+      .title{font-size:28px;font-weight:700;margin-bottom:16px}
+    </style>
+    <h1 class="title">Marks</h1>
+    <div *ngFor=let m of marks>
+      <span class="chip">{{m}}</span>
+    </div>
+  </div>
+})
+export class ExampleComponent {
+  constructor(public http: any) {}
+
+  age: number = 15;
+  username: string = "Ahmad";
+  marks: any = [1,2,3];
+  info: any = {
+    phone: "09123456789",
+    email: "ahmad@gmail.com",
+    address: "Syria-damascus"
+  };
+
+  const add = (a: number, b: number) => { return a + b; };
+
+  printUserData(count: number) {
+    console.log(
+      "username is" + username +
+      "age" + age +
+      "marks" + marks[0] + "," + marks[1] + "," + marks[2] +
+      "info" + info.phone + "," + info.email + "," + info.address
+    );
+  }
+}

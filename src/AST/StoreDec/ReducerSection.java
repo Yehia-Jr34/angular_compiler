@@ -1,9 +1,10 @@
 package AST.StoreDec;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReducerSection {
-    private List<ReducerRule> rules;
+    private List<ReducerRule> rules = new ArrayList<ReducerRule>();
 
     public List<ReducerRule> getRules() {
         return rules;

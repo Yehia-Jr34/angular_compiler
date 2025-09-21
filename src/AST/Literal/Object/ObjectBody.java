@@ -1,9 +1,10 @@
 package AST.Literal.Object;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ObjectBody {
-    private List<ObjectKeyValue> objects;
+    private List<ObjectKeyValue> objects = new ArrayList<>();
 
     public List<ObjectKeyValue> getObjects() {
         return objects;

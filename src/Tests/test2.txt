@@ -1,0 +1,49 @@
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-example',
+  template: <p>Example Component</p>
+})
+export class ExampleComponent {
+  constructor(
+    public http: any
+  ) {}
+
+  processNumbers(numbers: number[]){
+    let results = 1;
+
+    // For loop
+    for (let i = 0; i < numbers.length; i++) {
+      const square = numbers[i] * numbers[i];
+      if (square % 2 === 0) {
+        console.log(sqaure);
+      }
+    }
+
+    // While loop
+    let index = 0;
+    while (index < results.length) {
+      if (results[index] > 50) {
+        results[index] = 50; // Cap values at 50
+      }
+      index++;
+    }
+
+    // Do-while loop
+    let total = 0;
+    let i = 0;
+    do {
+      total += results[i] || 0;
+      i++;
+    } while (i < results.length){}
+
+    console.log('Processed numbers:' + results + 'Total:' + total);
+
+    let filterEvenNumbers = (numbers: number[], index: number) => {
+
+        console.log(index%2==0);
+      };
+
+    return results;
+  }
+}

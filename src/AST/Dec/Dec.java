@@ -1,7 +1,6 @@
 package AST.Dec;
 
 import AST.Dec.Function.NormalFunctionDec;
-import AST.Dec.Function.NormalFunctionDeclaration;
 import AST.Dec.Variable.VariableDecl;
 import AST.Dec.Variable.VariableTypeDecl;
 

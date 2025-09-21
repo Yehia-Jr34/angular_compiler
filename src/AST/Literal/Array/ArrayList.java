@@ -3,7 +3,7 @@ package AST.Literal.Array;
 import java.util.List;
 
 public class ArrayList {
-    private List<ArrayElement> elements;
+    private List<ArrayElement> elements = new java.util.ArrayList<>();
 
     public List<ArrayElement> getElements() {
         return elements;

@@ -1,9 +1,10 @@
 package AST.StoreDec;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SelectorsSection {
-    List<SelectorDec> selectors;
+    List<SelectorDec> selectors = new ArrayList<SelectorDec>();
 
     public List<SelectorDec> getSelectors() {
         return selectors;

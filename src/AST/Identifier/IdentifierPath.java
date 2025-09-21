@@ -1,9 +1,10 @@
 package AST.Identifier;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class IdentifierPath {
-    private List<Identifier> identifiers;
+    private List<Identifier> identifiers  = new ArrayList<Identifier>();
 
     public List<Identifier> getIdentifiers() {
         return identifiers;

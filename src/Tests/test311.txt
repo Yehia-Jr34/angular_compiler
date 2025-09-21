@@ -1,0 +1,83 @@
+import { Component } from '@angular/core'
+
+/* ====================== Store ====================== */
+store ProductsStore {
+  state {
+    // يسمح القاعده لديك بكلٍ من ":" أو "="
+    products = [
+      { name: 'Laptop',     image: 'malem.png', desc: 'High performance laptop' },
+      { name: 'Laptop',     image: 'malem.png', desc: 'High performance laptop' },
+      { name: 'Headphones', image: 'malem.png', desc: 'Noise-cancelling headset' }
+    ]
+  }
+
+  /* (اختياري) actions – إن أردت معالجتها قبل الـ reducer */
+  actions {
+    // مجرّد تمرير للحمولة كما هي
+    addProduct = (payload) => { return payload; }
+  }
+
+  /* reducer: يستقبل الحالة الحالية والحمولة الجديدة ويُرجع حالة جديدة */
+  reducer {
+    addProduct: (s, p) => {
+      // الحالة لديك بسيطة (products فقط) لذا نُرجع كائناً جديداً بالقيمة المُحدَّثة
+      return { products: s.products.concat([p]) };
+    }
+  }
+
+  /* selectors: لازم body يكون block + return حسب الكلاس FunctionBody الحالي */
+selectors {
+  products$ = (s) => { return s.products; };
+}
+
+} // ← مهم إغلاق الـ store قبل تعريف الـ Component
+
+/* =================================================== */
+
+Component({
+  selector: 'my-app',
+  template: <div>
+    <form (submit)= addProduct(newName, newImage, newDesc)>
+      <div>
+        <p>product name</p>
+        <input [value]= newName (input)= newName />
+      </div>
+
+      <div>
+        <p>product image</p>
+        <input type='file' (change)= newImage />
+        <img [src]= newImage alt='preview' width='120' height='120' />
+      </div>
+
+      <div>
+        <p>desc</p>
+        <input [value]= newDesc (input)= newDesc />
+      </div>
+
+      <button (click)= addProduct(newName, newImage, newDesc)>add product</button>
+    </form>
+
+    <ul>
+      <li *ngFor= let prod of products>
+        <div>
+          <img [src]= prod.image alt='product' width='160' height='160' />
+          <p>{{ prod.name }}</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+})
+
+export class ProductsComponent {
+  let newName  = ''
+  let newImage = ''
+  let newDesc  = ''
+
+  /* القراءة من الحالة عبر selector */
+  let products = select(products$)
+
+  /* التحديث عبر dispatch إلى الـ reducer */
+  let addProduct = (n, img, d) => {
+    dispatch('addProduct', { name: n, image: img, desc: d })
+  }
+}
