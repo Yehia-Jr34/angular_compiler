@@ -6,7 +6,7 @@ public class Row {
     private String dataType;
     private int line;
     private int col;
-    private String scopeKey;
+    private String name;
 
     public String getType() { return type; }
 
@@ -28,9 +28,13 @@ public class Row {
 
     public void setCol(int col) { this.col = col; }
 
-    public String getScopeKey() { return scopeKey; }
+    public String getName() {
+        return name;
+    }
 
-    public void setScopeKey(String scopeKey) { this.scopeKey = scopeKey; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
     @Override
     public String toString() {
@@ -40,7 +44,7 @@ public class Row {
                 ", dataType = '" + dataType + '\'' +
                 ", line = " + line +
                 ", col = " + col +
-                ", scopeKey = '" + scopeKey + '\'' +
+                ", name = '" + name + '\'' +
                 '}';
     }
 }
