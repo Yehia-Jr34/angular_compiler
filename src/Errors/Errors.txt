@@ -1,0 +1,39 @@
+Syntax error at line 1:0 - token recognition error at: '@'
+Syntax error at line 2:2 - mismatched input 'state' expecting {'(', '['}
+Syntax error at line 15:0 - token recognition error at: '@'
+Syntax error at line 15:1 - mismatched input 'Component' expecting <EOF>
+Syntax error at line 16:12 - token recognition error at: '`'
+Syntax error at line 27:2 - token recognition error at: '`'
+Syntax error at line 13:15 - mismatched input 'state' expecting {'[', '='}
+Syntax error at line 13:24 - mismatched input 'state' expecting {'[', '='}
+Syntax error at line 13:38 - mismatched input ';' expecting {'[', '='}
+Syntax error at line 21:23 - no viable alternative at input '<liNgFor=LetprodOf'
+Syntax error at line 21:13 - extraneous input '=' expecting {'{', LessThan, Identifier}
+Syntax error at line 21:34 - extraneous input '>' expecting {'{', LessThan, Identifier}
+Syntax error at line 24:14 - extraneous input ':' expecting {'{', LessThan, Identifier}
+Syntax error at line 30:3 - no viable alternative at input '</'
+Syntax error at line 30:6 - extraneous input '>' expecting '}'
+Syntax error at line 18:6 - missing '{' at 'list'
+Syntax error at line 18:10 - mismatched input '-' expecting {'[', '}', '.'}
+Syntax error at line 18:16 - extraneous input ':' expecting {'{', LessThan, Identifier}
+Syntax error at line 18:22 - extraneous input ';' expecting {'{', LessThan, Identifier}
+Syntax error at line 19:13 - extraneous input ':' expecting {'{', LessThan, Identifier}
+Syntax error at line 22:4 - mismatched input 'li' expecting {'[', '}', '.'}
+Syntax error at line 23:24 - token recognition error at: '#'
+Syntax error at line 27:24 - token recognition error at: '#'
+Syntax error at line 38:24 - token recognition error at: '#'
+Syntax error at line 46:24 - token recognition error at: '#'
+Syntax error at line 1:9 - mismatched input 'Component' expecting Identifier
+Syntax error at line 3:6 - mismatched input 'ProductsStore' expecting Identifier
+Syntax error at line 5:4 - mismatched input 'products' expecting Identifier
+Syntax error at line 6:8 - no viable alternative at input '[{name'
+Syntax error at line 6:24 - mismatched input 'desc' expecting Identifier
+Syntax error at line 6:50 - mismatched input 'image' expecting Identifier
+Syntax error at line 6:71 - mismatched input ',' expecting {'}', 'actions', 'reducer', 'selectors'}
+Syntax error at line 1:9 - mismatched input '@Component' expecting Identifier
+Syntax error at line 3:6 - mismatched input 'ProductsStore' expecting Identifier
+Syntax error at line 5:4 - mismatched input 'products' expecting Identifier
+Syntax error at line 6:8 - no viable alternative at input '[{name'
+Syntax error at line 6:24 - mismatched input 'desc' expecting Identifier
+Syntax error at line 6:50 - mismatched input 'image' expecting Identifier
+Syntax error at line 6:71 - mismatched input ',' expecting {'}', 'actions', 'reducer', 'selectors'}

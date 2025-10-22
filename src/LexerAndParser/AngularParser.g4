@@ -55,11 +55,15 @@ selectorDecl
 
 /* ======================== 4. Component Declaration ======================== */
 componentDecorator
-    : identifier_ OpenParen compoenentObject CloseParen
+    : Component OpenParen compoenentObject CloseParen
     ;
 
 compoenentObject
-    : OpenBrace Selector Colon StringLiteral Comma Template Colon html CloseBrace
+    : OpenBrace
+      Selector Colon StringLiteral Comma
+      Template Colon Backtick html Backtick
+      (Comma Styles Colon Backtick styles Backtick)?  // ← إضافة جديدة
+      CloseBrace
     ;
 
 /* ======================== 5. Class Body Statements ======================== */
@@ -330,4 +334,22 @@ eventBinding
 /* ======================== 15. Function Calls ======================== */
 functionCall
     : (identifierPath | Select | Dispatch) OpenParen (expr (Comma expr)*)? CloseParen
+    ;
+
+/* ======================== 15 CSS Styles ======================== */
+styles
+    : StringLiteral                    // CSS inline
+    | stringArray*   // Multiple style files
+    ;
+
+stringArray
+    : ((StringLiteral | htmlTag) OpenBrace cssAtt* CloseBrace)+
+    ;
+
+cssAtt
+    : identifier_ Colon (CssColor|HexColorLiteral|cssValue) SemiColon
+    ;
+
+cssValue
+    : DecimalLiteral CssUnit
     ;

@@ -1,0 +1,37 @@
+import { Component } from '@angular/core'
+
+store ProductsStore {
+  state {
+    products: [
+      { name: "Laptop", desc: "High performance", price: "$1200", image: "laptop.png" },
+      { name: "Phone", desc: "Latest model", price: "$800", image: "phone.png" },
+      { name: "Tablet", desc: "Lightweight and fast", price: "$600", image: "tablet.png" }
+    ]
+  }
+
+  selectors {
+    products = state => state.products;
+  }
+}
+
+Component({
+  selector: "app-root",
+  template:
+  <ul>
+    <li NgFor=Let prod Of products>
+      <h3>{{ prod.name }}</h3>
+      <p>{{ prod.desc }}</p>
+      <p>Price: {{ prod.price }}</p>
+      <img src="{{ prod.image }}" width="150" />
+      <button onclick="localStorage.setItem('selectedItem', JSON.stringify(prod)); window.location.href='details.html';">
+        Details
+      </button>
+    </li>
+  </ul>
+})
+export class ProductsComponent {
+  selectProduct(prod) {
+    localStorage.setItem("selectedItem", JSON.stringify(prod));
+    window.location.href = "details.html";
+  }
+}

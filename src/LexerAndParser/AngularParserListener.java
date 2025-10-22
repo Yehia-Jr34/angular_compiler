@@ -707,4 +707,34 @@ public interface AngularParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFunctionCall(AngularParser.FunctionCallContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AngularParser#styles}.
+	 * @param ctx the parse tree
+	 */
+	void enterStyles(AngularParser.StylesContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AngularParser#styles}.
+	 * @param ctx the parse tree
+	 */
+	void exitStyles(AngularParser.StylesContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AngularParser#stringArray}.
+	 * @param ctx the parse tree
+	 */
+	void enterStringArray(AngularParser.StringArrayContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AngularParser#stringArray}.
+	 * @param ctx the parse tree
+	 */
+	void exitStringArray(AngularParser.StringArrayContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AngularParser#cssValue}.
+	 * @param ctx the parse tree
+	 */
+	void enterCssValue(AngularParser.CssValueContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AngularParser#cssValue}.
+	 * @param ctx the parse tree
+	 */
+	void exitCssValue(AngularParser.CssValueContext ctx);
 }

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Details</title>
+</head>
+<body>
+<h2>Product Details</h2>
+<script>
+const data = JSON.parse(localStorage.getItem('selectedItem'));
+if (data) {
+  document.body.innerHTML += `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+} else {
+  document.body.innerHTML += `<p>No product selected.</p>`;
+}
+</script>
+</body>
+</html>

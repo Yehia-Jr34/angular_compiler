@@ -430,4 +430,22 @@ public interface AngularParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitFunctionCall(AngularParser.FunctionCallContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AngularParser#styles}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStyles(AngularParser.StylesContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AngularParser#stringArray}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringArray(AngularParser.StringArrayContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AngularParser#cssValue}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCssValue(AngularParser.CssValueContext ctx);
 }

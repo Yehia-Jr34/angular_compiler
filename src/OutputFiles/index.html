@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Angular DSL App</title>
+</head>
+<body>
+<div id="app">
+    <ul>
+        <li data-ngfor="prod of products"><h3>{{ prod.name }}</h3>
+            <p>{{ prod.desc }}</p><img/>
+            <button onclick="selectProduct(prod)">Details</button>
+        </li>
+    </ul>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

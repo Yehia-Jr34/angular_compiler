@@ -1,0 +1,58 @@
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  template: `
+    <ul>
+      <li *ngFor=let prod of products>
+        <h3>{{ prod.name }}</h3>
+        <p>{{ prod.desc }}</p>
+        <img src="prod.image" />
+        <button (click)=selectProduct(prod)>Details</button>
+      </li>
+    </ul>
+  `,
+  styles: `
+    ul {
+      padding: 0px;
+      margin: 20px;
+    }
+    li {
+      border: 1px ;
+      padding: 15px;
+      margin: 10px;
+      background: #f9f9f9;
+    }
+    h3 {
+      color: #333;
+    }
+    p {
+      color: #666;
+    }
+    img {
+      width: 100px;
+      height: 100px;
+      margin: 10px;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      padding: 8px;
+    }
+    button {
+      background: #0056b3;
+    }
+  `
+})
+export class ProductsComponent {
+  Product [
+    { name: "Laptop", desc: "High performance", image: "laptop.png" },
+    { name: "Phone", desc: "Latest model", image: "phone.png" },
+    { name: "Tablet", desc: "Lightweight and fast", image: "tablet.png" }
+  ];
+
+  selectProduct(prod) {
+    localStorage.setItem("selectedItem", JSON.stringify(prod));
+    window.location.href = "details.html";
+  }
+}

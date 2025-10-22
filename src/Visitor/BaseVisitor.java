@@ -47,6 +47,8 @@ import AST.Statement.IfStatement;
 import AST.Statement.Loops.*;
 import AST.Statement.Statement;
 import AST.StoreDec.*;
+import AST.Styles.StringArray;
+import AST.Styles.Styles;
 import LexerAndParser.AngularParser;
 import LexerAndParser.AngularParserBaseVisitor;
 import LexerAndParser.AngularParser;
@@ -307,9 +309,6 @@ public class BaseVisitor extends AngularParserBaseVisitor {
     public ComponentDecorator visitComponentDecorator(AngularParser.ComponentDecoratorContext ctx) {
         ComponentDecorator object = new ComponentDecorator();
 
-        Identifier child1 = visitIdentifier_(ctx.identifier_());
-        object.setIdentifier(child1);
-
         ComponentObject child2 = visitCompoenentObject(ctx.compoenentObject());
         object.setComponentObject(child2);
 
@@ -335,6 +334,11 @@ public class BaseVisitor extends AngularParserBaseVisitor {
 
         HTML child2 = visitHtml(ctx.html());
         object.setTemplate(child2);
+
+        if (ctx.styles() != null) {
+            Styles child3 = visitStyles(ctx.styles());
+            object.setStyles(child3);
+        }
 
         return object;
     }
@@ -1320,6 +1324,34 @@ public class BaseVisitor extends AngularParserBaseVisitor {
                 Expr child2 = visitExpr(ctx.expr(i));
                 object.addArgument(child2);
             }
+        }
+
+        return object;
+    }
+
+    @Override
+    public Styles visitStyles(AngularParser.StylesContext ctx) {
+        Styles object = new Styles();
+
+        if (!ctx.stringArray().isEmpty()) {
+            for (int i = 0; i < ctx.stringArray().size(); i++) {
+                StringArray child = visitStringArray(ctx.stringArray(i));
+                object.add(child);
+            }
+        } else {
+            String child = ctx.StringLiteral().getText();
+            object.setStyle(child);
+        }
+
+        return object;
+    }
+
+    @Override
+    public StringArray visitStringArray(AngularParser.StringArrayContext ctx) {
+        StringArray object = new StringArray();
+
+        for (int i = 0; i < ctx.StringLiteral().size(); i++) {
+            object.add(ctx.StringLiteral(i).getText().toString());
         }
 
         return object;

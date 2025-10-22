@@ -1,3 +1,4 @@
+import CodeGeneration.CodeGenerator;
 import ErrorHandling.CustomErrorListener;
 import LexerAndParser.AngularLexer;
 import LexerAndParser.AngularParser;
@@ -12,13 +13,16 @@ import java.nio.file.Paths;
 
 public class Main {
 
-    static String inputFile = "D:\\F.I.T.E\\Fifth Year\\S2\\Compiler\\Last_Angular_Compiler\\src\\Tests\\test311.txt";
+    static String inputFile = "D:\\F.I.T.E\\Fifth Year\\S2\\Compiler\\Last_Angular_Compiler\\src\\Tests\\test5.txt";
     static String errorFile = "D:\\F.I.T.E\\Fifth Year\\S2\\Compiler\\Last_Angular_Compiler\\src\\Errors\\Errors.txt";
+    static String outputFile = "D:\\F.I.T.E\\Fifth Year\\S2\\Compiler\\Last_Angular_Compiler\\src\\OutputFiles";
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         try {
+            // قراءة الملف
             CharStream input = CharStreams.fromPath(Paths.get(inputFile));
 
+            // التحليل اللغوي
             AngularLexer lexer = new AngularLexer(input);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
 
@@ -29,18 +33,21 @@ public class Main {
             parser.removeErrorListeners();
             parser.addErrorListener(errorListener);
 
-            ParseTree tree = parser.prog();
-
+            AngularParser.ProgContext tree = parser.prog();
             errorListener.close();
 
-            ASTViewer.showAST(tree);
+            // توليد الكود
+            CodeGenerator generator = new CodeGenerator();
+            generator.emit(tree);
+            generator.writeToDisk(Paths.get(outputFile));
 
-            // Program = visit
-            // value = program.generateCode() =>
-            // file.write(value)
+            System.out.println("✅ Code generation completed. Files written to: " + outputFile);
 
         } catch (IOException e) {
             System.err.println("IO error: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Code generation error: " + e.getMessage());
         }
     }
+
 }
