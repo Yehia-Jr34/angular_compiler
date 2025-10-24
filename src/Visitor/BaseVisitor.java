@@ -12,6 +12,7 @@ import AST.Expr.Expr;
 import AST.Expr.Operator;
 import AST.HTMLAndInterpolation.HTML.HTML;
 import AST.HTMLAndInterpolation.HTML.HtmlContent;
+import AST.HTMLAndInterpolation.InterpolationValue.Interpolation;
 import AST.HTMLAndInterpolation.InterpolationValue.InterpolationValue;
 import AST.HTMLElementsAndBindings.Attribute.Attribute;
 import AST.HTMLElementsAndBindings.Attribute.AttributeName;
@@ -42,16 +43,15 @@ import AST.Literal.Object.ObjectKeyValue;
 import AST.Literal.Object.ObjectLiteral;
 import AST.Program;
 import AST.Return.Return;
+import AST.Statement.ArrayDeclaration;
 import AST.Statement.ConsoleLog;
 import AST.Statement.IfStatement;
 import AST.Statement.Loops.*;
 import AST.Statement.Statement;
 import AST.StoreDec.*;
-import AST.Styles.StringArray;
-import AST.Styles.Styles;
+import AST.Styles.*;
 import LexerAndParser.AngularParser;
 import LexerAndParser.AngularParserBaseVisitor;
-import LexerAndParser.AngularParser;
 import SymbolTable.BaseSymbolTable;
 import SymbolTable.Row;
 
@@ -62,14 +62,18 @@ public class BaseVisitor extends AngularParserBaseVisitor {
     public Program visitProg(AngularParser.ProgContext ctx) {
         Program object = new Program();
 
-        for (int i = 0; i < ctx.importStatement().size(); i++) {
-            ImportStatement child1 = visitImportStatement(ctx.importStatement(i));
-            object.addImport(child1);
+        if (!ctx.importStatement().isEmpty()) {
+            for (int i = 0; i < ctx.importStatement().size(); i++) {
+                ImportStatement child1 = visitImportStatement(ctx.importStatement(i));
+                object.addImport(child1);
+            }
         }
 
-        for (int i = 0; i < ctx.storeDecl().size(); i++) {
-            StoreDec child2 = visitStoreDecl(ctx.storeDecl(i));
-            object.addStore(child2);
+        if (!ctx.storeDecl().isEmpty()) {
+            for (int i = 0; i < ctx.storeDecl().size(); i++) {
+                StoreDec child2 = visitStoreDecl(ctx.storeDecl(i));
+                object.addStore(child2);
+            }
         }
 
         ComponentDecorator child3 = visitComponentDecorator(ctx.componentDecorator());
@@ -78,9 +82,11 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         Identifier child4 = visitIdentifier_(ctx.identifier_());
         object.setClassName(child4);
 
-        for (int i = 0; i < ctx.statement().size(); i++) {
-            Statement child5 = visitStatement(ctx.statement(i));
-            object.addStatement(child5);
+        if (!ctx.statement().isEmpty()) {
+            for (int i = 0; i < ctx.statement().size(); i++) {
+                Statement child5 = visitStatement(ctx.statement(i));
+                object.addStatement(child5);
+            }
         }
 
         return object;
@@ -204,9 +210,11 @@ public class BaseVisitor extends AngularParserBaseVisitor {
     public ActionsSection visitActionsSection(AngularParser.ActionsSectionContext ctx) {
         ActionsSection object = new ActionsSection();
 
-        for (int i = 0; i < ctx.actionDecl().size(); i++) {
-            ActionDec child = visitActionDecl(ctx.actionDecl(i));
-            object.addAction(child);
+        if (!ctx.actionDecl().isEmpty()) {
+            for (int i = 0; i < ctx.actionDecl().size(); i++) {
+                ActionDec child = visitActionDecl(ctx.actionDecl(i));
+                object.addAction(child);
+            }
         }
 
         return object;
@@ -239,9 +247,11 @@ public class BaseVisitor extends AngularParserBaseVisitor {
     public ReducerSection visitReducerSection(AngularParser.ReducerSectionContext ctx) {
         ReducerSection object = new ReducerSection();
 
-        for (int i = 0; i < ctx.reducerRule().size(); i++) {
-            ReducerRule child = visitReducerRule(ctx.reducerRule(i));
-            object.addRule(child);
+        if (!ctx.reducerRule().isEmpty()) {
+            for (int i = 0; i < ctx.reducerRule().size(); i++) {
+                ReducerRule child = visitReducerRule(ctx.reducerRule(i));
+                object.addRule(child);
+            }
         }
 
         return object;
@@ -313,7 +323,7 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         object.setComponentObject(child2);
 
         Row row = new Row();
-        row.setName(object.getIdentifier().getName());
+//        row.setName(object.getIdentifier().getName());
         row.setType("component decoration");
         row.setLine(ctx.getStart().getLine());
         row.setCol(ctx.getStart().getCharPositionInLine());
@@ -368,6 +378,9 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         } else if (ctx.if_() != null) {
             IfStatement child7 = visitIf(ctx.if_());
             object.setIfStatement(child7);
+        } else if (ctx.arrayDeclaration() != null) {
+            ArrayDeclaration child8 = visitArrayDeclaration(ctx.arrayDeclaration());
+            object.setArrayDeclaration(child8);
         }
 
         return object;
@@ -377,9 +390,11 @@ public class BaseVisitor extends AngularParserBaseVisitor {
     public Block visitBlock(AngularParser.BlockContext ctx) {
         Block object = new Block();
 
-        for (int i = 0; i < ctx.statement().size(); i++) {
-            Statement child = visitStatement(ctx.statement(i));
-            object.addStatement(child);
+        if (!ctx.statement().isEmpty()) {
+            for (int i = 0; i < ctx.statement().size(); i++) {
+                Statement child = visitStatement(ctx.statement(i));
+                object.addStatement(child);
+            }
         }
 
         return object;
@@ -1014,7 +1029,7 @@ public class BaseVisitor extends AngularParserBaseVisitor {
     public HTML visitHtml(AngularParser.HtmlContext ctx) {
         HTML object = new HTML();
 
-        if (ctx.htmlContent() != null) {
+        if (!ctx.htmlContent().isEmpty()) {
             for (int i = 0; i < ctx.htmlContent().size(); i++) {
                 HtmlContent child = visitHtmlContent(ctx.htmlContent(i));
                 object.addContent(child);
@@ -1033,9 +1048,11 @@ public class BaseVisitor extends AngularParserBaseVisitor {
             object.setHtmlElement(child);
         } else if (ctx.Identifier() != null) {
             object.setHtml(ctx.Identifier().getText());
-        } else if (ctx.interpolationValue() != null) {
-            InterpolationValue child = visitInterpolationValue(ctx.interpolationValue());
+        } else if (ctx.interpolation() != null) {
+            Interpolation child = visitInterpolation(ctx.interpolation());
             object.setInterpolationValue(child);
+        } else if (ctx.textContent() != null) {
+            object.setTextContent(ctx.textContent().getText());
         }
 
         return object;
@@ -1079,9 +1096,11 @@ public class BaseVisitor extends AngularParserBaseVisitor {
             OpenTag child2 = visitOpenTag(ctx.openTag());
             object.setOpenTag(child2);
 
-            for (int i = 0; i < ctx.htmlContent().size(); i++) {
-                HtmlContent child = visitHtmlContent(ctx.htmlContent(i));
-                object.addHtmlContent(child);
+            if (!ctx.htmlContent().isEmpty()) {
+                for (int i = 0; i < ctx.htmlContent().size(); i++) {
+                    HtmlContent child = visitHtmlContent(ctx.htmlContent(i));
+                    object.addHtmlContent(child);
+                }
             }
 
             CloseTag child3 = visitCloseTag(ctx.closeTag());
@@ -1140,7 +1159,7 @@ public class BaseVisitor extends AngularParserBaseVisitor {
     public SelfClosingTag visitSelfClosingTag(AngularParser.SelfClosingTagContext ctx) {
         SelfClosingTag object = new SelfClosingTag();
 
-        object.setTag(ctx.Identifier().getText());
+        object.setTag(ctx.htmlTag().getText());
 
         if (ctx.boundAttribute() != null) {
             for (int i = 0; i < ctx.boundAttribute().size(); i++) {
@@ -1195,11 +1214,15 @@ public class BaseVisitor extends AngularParserBaseVisitor {
     public ForDirective visitForDirective(AngularParser.ForDirectiveContext ctx) {
         ForDirective object = new ForDirective();
 
-        Identifier child1 = visitIdentifier_(ctx.identifier_(0));
-        object.setIdentifier1(child1);
+        if (!ctx.identifier_().isEmpty()){
+            Identifier child1 = visitIdentifier_(ctx.identifier_(0));
+            object.setIdentifier1(child1);
 
-        Identifier child2 = visitIdentifier_(ctx.identifier_(1));
-        object.setIdentifier2(child2);
+            Identifier child2 = visitIdentifier_(ctx.identifier_(1));
+            object.setIdentifier2(child2);
+        } else {
+            object.setExpression(ctx.StringLiteral().getText());
+        }
 
         return object;
     }
@@ -1208,12 +1231,16 @@ public class BaseVisitor extends AngularParserBaseVisitor {
     public IfDirective visitIfDirective(AngularParser.IfDirectiveContext ctx) {
         IfDirective object = new IfDirective();
 
-        if (ctx.identifier_() != null) {
-            Identifier child1 = visitIdentifier_(ctx.identifier_());
-            object.setCondition(child1);
-        } else if (ctx.anyLiteral() != null) {
-            AnyLiteral child2 = visitAnyLiteral(ctx.anyLiteral());
-            object.setThen(child2);
+        if (ctx.StringLiteral() == null){
+            if (ctx.identifier_() != null) {
+                Identifier child1 = visitIdentifier_(ctx.identifier_());
+                object.setCondition(child1);
+            } else if (ctx.anyLiteral() != null) {
+                AnyLiteral child2 = visitAnyLiteral(ctx.anyLiteral());
+                object.setThen(child2);
+            }
+        } else {
+            object.setExpression(ctx.StringLiteral().getText());
         }
 
         return object;
@@ -1262,8 +1289,12 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         AttributeName child1 = visitAttributeName(ctx.attributeName());
         object.setName(child1);
 
-        IdentifierPath child2 = visitIdentifierPath(ctx.identifierPath());
-        object.setBound(child2);
+        if (ctx.identifierPath() != null) {
+            IdentifierPath child2 = visitIdentifierPath(ctx.identifierPath());
+            object.setBound(child2);
+        } else {
+            object.setValue(ctx.StringLiteral().getText());
+        }
 
         return object;
     }
@@ -1297,12 +1328,9 @@ public class BaseVisitor extends AngularParserBaseVisitor {
             row.setValue(ctx.functionCall().getText());
 
             object.setFunctionCall(child2);
-        } else if (ctx.identifierPath() != null) {
-            IdentifierPath child3 = visitIdentifierPath(ctx.identifierPath());
-
-            row.setValue(ctx.identifierPath().getText());
-
-            object.setIdentifierPath(child3);
+        } else if (ctx.StringLiteral() != null) {
+            object.setIdentifierPath(ctx.StringLiteral().getText());
+            row.setValue(ctx.StringLiteral().getText());
         }
 
         symbolTable.addSymbol(row);
@@ -1319,7 +1347,7 @@ public class BaseVisitor extends AngularParserBaseVisitor {
             object.setIdentifierPath(child1);
         }
 
-        if (ctx.expr() != null) {
+        if (!ctx.expr().isEmpty()) {
             for (int i = 0; i < ctx.expr().size(); i++) {
                 Expr child2 = visitExpr(ctx.expr(i));
                 object.addArgument(child2);
@@ -1330,29 +1358,127 @@ public class BaseVisitor extends AngularParserBaseVisitor {
     }
 
     @Override
+    public ArrayDeclaration visitArrayDeclaration(AngularParser.ArrayDeclarationContext ctx) {
+        ArrayDeclaration object = new ArrayDeclaration();
+
+        Identifier child1 = visitIdentifier_(ctx.identifier_());
+        object.setIdentifier(child1);
+
+        ArrayLiteral child2 = visitArrayLiteral(ctx.arrayLiteral());
+        object.setArrayLiteral(child2);
+
+        return object;
+    }
+
+    @Override
+    public Interpolation visitInterpolation(AngularParser.InterpolationContext ctx) {
+        Interpolation object = new Interpolation();
+
+        InterpolationValue child1 = visitInterpolationValue(ctx.interpolationValue());
+        object.setValue(child1);
+
+        return object;
+    }
+
+    @Override
     public Styles visitStyles(AngularParser.StylesContext ctx) {
         Styles object = new Styles();
 
-        if (!ctx.stringArray().isEmpty()) {
-            for (int i = 0; i < ctx.stringArray().size(); i++) {
-                StringArray child = visitStringArray(ctx.stringArray(i));
-                object.add(child);
+        if (!ctx.cssRule().isEmpty()) {
+            for (int i = 0; i < ctx.cssRule().size(); i++) {
+                CssRule child1 = visitCssRule(ctx.cssRule(i));
+                object.addRule(child1);
             }
-        } else {
-            String child = ctx.StringLiteral().getText();
-            object.setStyle(child);
+        } else if (!ctx.cssDeclaration().isEmpty()) {
+            for (int i = 0; i < ctx.cssDeclaration().size(); i++) {
+                CssDeclaration child2 = visitCssDeclaration(ctx.cssDeclaration(i));
+                object.addDeclaration(child2);
+            }
+
+            return object;
         }
 
         return object;
     }
 
     @Override
-    public StringArray visitStringArray(AngularParser.StringArrayContext ctx) {
-        StringArray object = new StringArray();
+    public CssRule visitCssRule(AngularParser.CssRuleContext ctx) {
+        CssRule object = new CssRule();
 
-        for (int i = 0; i < ctx.StringLiteral().size(); i++) {
-            object.add(ctx.StringLiteral(i).getText().toString());
+        object.setRule(ctx.Identifier().getText());
+
+        if (!ctx.cssDeclaration().isEmpty()) {
+            for (int i = 0; i < ctx.cssDeclaration().size(); i++) {
+                CssDeclaration child = visitCssDeclaration(ctx.cssDeclaration(i));
+                object.addDeclaration(child);
+            }
         }
+
+        return object;
+    }
+
+    @Override
+    public CssDeclaration visitCssDeclaration(AngularParser.CssDeclarationContext ctx) {
+        CssDeclaration object = new CssDeclaration();
+
+        object.setCss(ctx.Identifier().getText());
+
+        PropertyValue child = visitPropertyValue(ctx.propertyValue());
+        object.setProperty(child);
+
+        return object;
+    }
+
+    @Override
+    public PropertyValue visitPropertyValue(AngularParser.PropertyValueContext ctx) {
+        PropertyValue object = new PropertyValue();
+
+        if (!ctx.identifierPath().isEmpty()) {
+            for (int i = 0; i < ctx.identifierPath().size(); i++) {
+                IdentifierPath child = visitIdentifierPath(ctx.identifierPath(i));
+                object.addPath(child);
+            }
+        }
+
+        if (!ctx.cssBasicColor().isEmpty()) {
+            for (int i = 0; i < ctx.cssBasicColor().size(); i++) {
+                CssBasicColor child = visitCssBasicColor(ctx.cssBasicColor(i));
+                object.addColor(child);
+            }
+        }
+
+        if (!ctx.CssUnit().isEmpty()) {
+            for (int i = 0; i < ctx.CssUnit().size(); i++) {
+                object.addValue(ctx.CssUnit(i).getText());
+            }
+        }
+
+        if (!ctx.StringLiteral().isEmpty()) {
+            for (int i = 0; i < ctx.StringLiteral().size(); i++) {
+                object.addValue(ctx.StringLiteral(i).getText());
+            }
+        }
+
+        if (!ctx.DecimalLiteral().isEmpty()) {
+            for (int i = 0; i < ctx.DecimalLiteral().size(); i++) {
+                object.addValue(ctx.DecimalLiteral(i).getText());
+            }
+        }
+
+        if (!ctx.HexColorLiteral().isEmpty()) {
+            for (int i = 0; i < ctx.HexColorLiteral().size(); i++) {
+                object.addValue(ctx.HexColorLiteral(i).getText());
+            }
+        }
+
+        return object;
+    }
+
+    @Override
+    public CssBasicColor visitCssBasicColor(AngularParser.CssBasicColorContext ctx) {
+        CssBasicColor object = new CssBasicColor();
+
+        object.setColor(ctx.CssColor().getText());
 
         return object;
     }

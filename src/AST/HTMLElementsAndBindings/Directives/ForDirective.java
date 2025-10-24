@@ -3,8 +3,10 @@ package AST.HTMLElementsAndBindings.Directives;
 import AST.Identifier.Identifier;
 
 public class ForDirective {
-    private Identifier identifier1;
-    private Identifier identifier2;
+    private Identifier identifier1 = null;
+    private Identifier identifier2 = null;
+
+    private String expression = null;
 
     public Identifier getIdentifier1() {
         return identifier1;
@@ -22,11 +24,25 @@ public class ForDirective {
         this.identifier2 = identifier2;
     }
 
+    public String getExpression() {
+        return expression;
+    }
+
+    public void setExpression(String expression) {
+        this.expression = expression;
+    }
+
     @Override
     public String toString() {
-        return "ForDirective { " +
-                "identifier1 = " + identifier1 +
-                ", identifier2 = " + identifier2 +
-                '}';
+        if (identifier1 != null && identifier2 != null) {
+            return "ForDirective { " +
+                    "identifier1 = " + identifier1 +
+                    ", identifier2 = " + identifier2 +
+                    '}';
+        } else {
+            return "ForDirective { " +
+                    "expression = " + expression +
+                    '}';
+        }
     }
 }

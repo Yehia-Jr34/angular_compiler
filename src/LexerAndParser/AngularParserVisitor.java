@@ -149,6 +149,12 @@ public interface AngularParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitConsoleLog(AngularParser.ConsoleLogContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link AngularParser#arrayDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayDeclaration(AngularParser.ArrayDeclarationContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link AngularParser#decl}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -329,6 +335,12 @@ public interface AngularParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitHtmlContent(AngularParser.HtmlContentContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link AngularParser#interpolation}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInterpolation(AngularParser.InterpolationContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link AngularParser#interpolationValue}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -340,6 +352,12 @@ public interface AngularParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitIdentifierPath(AngularParser.IdentifierPathContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AngularParser#textContent}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTextContent(AngularParser.TextContentContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link AngularParser#htmlElement}.
 	 * @param ctx the parse tree
@@ -437,15 +455,27 @@ public interface AngularParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStyles(AngularParser.StylesContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link AngularParser#stringArray}.
+	 * Visit a parse tree produced by {@link AngularParser#cssRule}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStringArray(AngularParser.StringArrayContext ctx);
+	T visitCssRule(AngularParser.CssRuleContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link AngularParser#cssValue}.
+	 * Visit a parse tree produced by {@link AngularParser#cssDeclaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCssValue(AngularParser.CssValueContext ctx);
+	T visitCssDeclaration(AngularParser.CssDeclarationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AngularParser#propertyValue}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPropertyValue(AngularParser.PropertyValueContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AngularParser#cssBasicColor}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCssBasicColor(AngularParser.CssBasicColorContext ctx);
 }

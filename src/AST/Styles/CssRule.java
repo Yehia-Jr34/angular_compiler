@@ -3,16 +3,16 @@ package AST.Styles;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Styles {
-    private List<CssRule> rules = new ArrayList<>();
-    private List<CssDeclaration> declarations = new ArrayList<>();
+public class CssRule {
+    private String rule;
+    private List<CssDeclaration> declarations = new ArrayList<CssDeclaration>();
 
-    public List<CssRule> getRules() {
-        return rules;
+    public String getRule() {
+        return rule;
     }
 
-    public void setRules(List<CssRule> rules) {
-        this.rules = rules;
+    public void setRule(String rule) {
+        this.rule = rule;
     }
 
     public List<CssDeclaration> getDeclarations() {
@@ -23,18 +23,14 @@ public class Styles {
         this.declarations = declarations;
     }
 
-    public void addRule(CssRule rule) {
-        rules.add(rule);
-    }
-
     public void addDeclaration(CssDeclaration declaration) {
         declarations.add(declaration);
     }
 
     @Override
     public String toString() {
-        return "Styles { " +
-                "rules = " + rules +
+        return "CssRule { " +
+                "rule = '" + rule + '\'' +
                 ", declarations = " + declarations +
                 '}';
     }

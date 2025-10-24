@@ -238,6 +238,16 @@ public interface AngularParserListener extends ParseTreeListener {
 	 */
 	void exitConsoleLog(AngularParser.ConsoleLogContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link AngularParser#arrayDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterArrayDeclaration(AngularParser.ArrayDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AngularParser#arrayDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitArrayDeclaration(AngularParser.ArrayDeclarationContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link AngularParser#decl}.
 	 * @param ctx the parse tree
 	 */
@@ -538,6 +548,16 @@ public interface AngularParserListener extends ParseTreeListener {
 	 */
 	void exitHtmlContent(AngularParser.HtmlContentContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link AngularParser#interpolation}.
+	 * @param ctx the parse tree
+	 */
+	void enterInterpolation(AngularParser.InterpolationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AngularParser#interpolation}.
+	 * @param ctx the parse tree
+	 */
+	void exitInterpolation(AngularParser.InterpolationContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link AngularParser#interpolationValue}.
 	 * @param ctx the parse tree
 	 */
@@ -557,6 +577,16 @@ public interface AngularParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIdentifierPath(AngularParser.IdentifierPathContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AngularParser#textContent}.
+	 * @param ctx the parse tree
+	 */
+	void enterTextContent(AngularParser.TextContentContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AngularParser#textContent}.
+	 * @param ctx the parse tree
+	 */
+	void exitTextContent(AngularParser.TextContentContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AngularParser#htmlElement}.
 	 * @param ctx the parse tree
@@ -718,23 +748,43 @@ public interface AngularParserListener extends ParseTreeListener {
 	 */
 	void exitStyles(AngularParser.StylesContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link AngularParser#stringArray}.
+	 * Enter a parse tree produced by {@link AngularParser#cssRule}.
 	 * @param ctx the parse tree
 	 */
-	void enterStringArray(AngularParser.StringArrayContext ctx);
+	void enterCssRule(AngularParser.CssRuleContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link AngularParser#stringArray}.
+	 * Exit a parse tree produced by {@link AngularParser#cssRule}.
 	 * @param ctx the parse tree
 	 */
-	void exitStringArray(AngularParser.StringArrayContext ctx);
+	void exitCssRule(AngularParser.CssRuleContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link AngularParser#cssValue}.
+	 * Enter a parse tree produced by {@link AngularParser#cssDeclaration}.
 	 * @param ctx the parse tree
 	 */
-	void enterCssValue(AngularParser.CssValueContext ctx);
+	void enterCssDeclaration(AngularParser.CssDeclarationContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link AngularParser#cssValue}.
+	 * Exit a parse tree produced by {@link AngularParser#cssDeclaration}.
 	 * @param ctx the parse tree
 	 */
-	void exitCssValue(AngularParser.CssValueContext ctx);
+	void exitCssDeclaration(AngularParser.CssDeclarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AngularParser#propertyValue}.
+	 * @param ctx the parse tree
+	 */
+	void enterPropertyValue(AngularParser.PropertyValueContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AngularParser#propertyValue}.
+	 * @param ctx the parse tree
+	 */
+	void exitPropertyValue(AngularParser.PropertyValueContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AngularParser#cssBasicColor}.
+	 * @param ctx the parse tree
+	 */
+	void enterCssBasicColor(AngularParser.CssBasicColorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AngularParser#cssBasicColor}.
+	 * @param ctx the parse tree
+	 */
+	void exitCssBasicColor(AngularParser.CssBasicColorContext ctx);
 }

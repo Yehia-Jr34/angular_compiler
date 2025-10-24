@@ -15,6 +15,7 @@ public class Statement {
     private IfStatement ifStatement = null;
     private Constructor constructor = null;
     private ConsoleLog consoleLog = null;
+    private ArrayDeclaration arrayDeclaration = null;
 
     public Block getBlock() {
         return block;
@@ -72,6 +73,14 @@ public class Statement {
         this.consoleLog = consoleLog;
     }
 
+    public ArrayDeclaration getArrayDeclaration() {
+        return arrayDeclaration;
+    }
+
+    public void setArrayDeclaration(ArrayDeclaration arrayDeclaration) {
+        this.arrayDeclaration = arrayDeclaration;
+    }
+
     @Override
     public String toString() {
         return "Statement { " +
@@ -82,6 +91,7 @@ public class Statement {
                 ", ifStatement = " + (ifStatement != null ? ifStatement : "not assigned") +
                 ", constructor = " + (constructor != null ? constructor : "not assigned") +
                 ", consoleLog = " + (consoleLog != null ? consoleLog : "not assigned") +
+                ", arrayDeclaration = " + (arrayDeclaration != null ? arrayDeclaration : "not assigned") +
                 '}';
     }
 }

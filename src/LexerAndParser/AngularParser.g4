@@ -62,13 +62,13 @@ compoenentObject
     : OpenBrace
       Selector Colon StringLiteral Comma
       Template Colon Backtick html Backtick
-      (Comma Styles Colon Backtick styles Backtick)?  // ← إضافة جديدة
+      (Comma Styles Colon Backtick styles Backtick)?
       CloseBrace
     ;
 
 /* ======================== 5. Class Body Statements ======================== */
 statement
-    : (block | decl | expr | loops | if | constructor | consoleLog) SemiColon?
+    : (block | decl | expr | loops | if | constructor | consoleLog | arrayDeclaration) SemiColon?
     ;
 
 block
@@ -101,6 +101,10 @@ do
 
 consoleLog
     : Console Dot Log OpenParen expr CloseParen
+    ;
+
+arrayDeclaration
+    : identifier_ Assign arrayLiteral
     ;
 
 /* ======================== 6. Variable & Type Declarations ======================== */
@@ -259,8 +263,13 @@ html
 
 htmlContent
     : htmlElement
+    | interpolation
+    | textContent
     | Identifier
-    | (OpenBrace OpenBrace interpolationValue CloseBrace CloseBrace)
+    ;
+
+interpolation
+    : OpenBrace OpenBrace interpolationValue CloseBrace CloseBrace
     ;
 
 interpolationValue
@@ -270,6 +279,10 @@ interpolationValue
 
 identifierPath
     : identifier_ (Dot identifier_)*
+    ;
+
+textContent
+    : ~(LessThan | OpenBrace | CloseBrace)+
     ;
 
 /* ======================== 14. HTML Elements & Bindings ======================== */
@@ -283,11 +296,11 @@ htmlTag
     ;
 
 openTag
-    : LessThan htmlTag structuralDirectives? (boundAttribute | attribute | eventBinding)* MoreThan
+    : LessThan htmlTag (structuralDirectives)? (boundAttribute | attribute | eventBinding)* MoreThan
     ;
 
 selfClosingTag
-    : LessThan Identifier (boundAttribute | attribute | eventBinding)* Divide MoreThan
+    : LessThan htmlTag (structuralDirectives)? (boundAttribute | attribute | eventBinding)* Divide MoreThan
     ;
 
 closeTag
@@ -300,11 +313,13 @@ structuralDirectives
     ;
 
 forDirective
-    : NgFor Assign Let identifier_ Of identifier_
+    : NgFor Assign StringLiteral  // دعم الـ quotes
+    | NgFor Assign Let identifier_ Of identifier_  // دعم بدون quotes
     ;
 
 ifDirective
-    : NgIf Assign (identifier_ | anyLiteral)
+    : NgIf Assign StringLiteral
+    | NgIf Assign (identifier_ | anyLiteral)
     ;
 
 attribute
@@ -319,16 +334,20 @@ attributeValue
     : StringLiteral | identifierPath
     ;
 
+// ========== التعديل الرئيسي: إصلاح الـ Property Binding ==========
 boundAttribute
-    : OpenBracket attributeName CloseBracket Assign identifierPath
+    : OpenBracket attributeName CloseBracket Assign StringLiteral
+    | OpenBracket attributeName CloseBracket Assign identifierPath
     ;
 
 eventName
     : Identifier
     ;
 
+// ========== التعديل الرئيسي: إصلاح الـ Event Binding ==========
 eventBinding
-    : OpenParen eventName CloseParen Assign (functionCall | identifierPath)
+    : OpenParen eventName CloseParen Assign StringLiteral
+    | OpenParen eventName CloseParen Assign functionCall
     ;
 
 /* ======================== 15. Function Calls ======================== */
@@ -336,20 +355,23 @@ functionCall
     : (identifierPath | Select | Dispatch) OpenParen (expr (Comma expr)*)? CloseParen
     ;
 
-/* ======================== 15 CSS Styles ======================== */
+/* ======================== 16. CSS Styles ======================== */
 styles
-    : StringLiteral                    // CSS inline
-    | stringArray*   // Multiple style files
+    : (cssRule | cssDeclaration)*
     ;
 
-stringArray
-    : ((StringLiteral | htmlTag) OpenBrace cssAtt* CloseBrace)+
+cssRule
+    : Identifier OpenBrace cssDeclaration* CloseBrace
     ;
 
-cssAtt
-    : identifier_ Colon (CssColor|HexColorLiteral|cssValue) SemiColon
+cssDeclaration
+    : Identifier Colon propertyValue SemiColon?
     ;
 
-cssValue
-    : DecimalLiteral CssUnit
+propertyValue
+    : (StringLiteral | DecimalLiteral | HexColorLiteral | CssUnit | identifierPath | cssBasicColor)+
+    ;
+
+cssBasicColor
+    : CssColor
     ;

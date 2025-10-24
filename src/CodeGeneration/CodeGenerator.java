@@ -1,298 +1,340 @@
 package CodeGeneration;
 
-import LexerAndParser.AngularParser;
-import org.antlr.v4.runtime.tree.TerminalNode;
+import AST.*;
+import AST.ComponentDecorator.ComponentDecorator;
+import AST.ComponentDecorator.ComponentObject;
+import AST.Expr.Expr;
+import AST.HTMLAndInterpolation.HTML.HTML;
+import AST.HTMLAndInterpolation.HTML.HtmlContent;
+import AST.HTMLAndInterpolation.InterpolationValue.Interpolation;
+import AST.HTMLAndInterpolation.InterpolationValue.InterpolationValue;
+import AST.HTMLElementsAndBindings.HTMLElements.HtmlElement;
+import AST.Identifier.Identifier;
+import AST.Identifier.IdentifierPath;
+import AST.Literal.Array.ArrayElement;
+import AST.Literal.Array.ArrayList;
+import AST.Literal.Array.ArrayLiteral;
+import AST.Literal.Object.ObjectBody;
+import AST.Literal.Object.ObjectKeyValue;
+import AST.Literal.Object.ObjectLiteral;
+import AST.Statement.ArrayDeclaration;
+import AST.Statement.Statement;
+import AST.Styles.*;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.*;
 
 public class CodeGenerator {
 
-    private final StringBuilder indexHtml = new StringBuilder();
-    private final StringBuilder appJs = new StringBuilder();
-    private final StringBuilder detailsHtml = new StringBuilder();
+    private Program currentProgram;
+    private String componentSelector;
+    private String templateContent;
+    private String stylesContent;
 
-    public void emit(AngularParser.ProgContext prog) {
-        for (var store : prog.storeDecl()) {
-            String storeName = store.identifier_().getText();
-            appJs.append("const ").append(storeName).append(" = {\n");
-            appJs.append(generateState(store)).append(",\n");
-            appJs.append(generateActions(store)).append(",\n");
-            appJs.append(generateReducer(store)).append(",\n");
-            appJs.append(generateSelectors(store)).append("\n");
-            appJs.append("};\n\n");
+    public void emit(Program program) {
+        this.currentProgram = program;
+        generateSingleFile();
+    }
+
+    private void generateSingleFile() {
+        // استخراج البيانات الأساسية من الـ AST
+        extractBasicInfo();
+
+        // إنشاء محتوى HTML كامل في ملف واحد
+        String singleFileContent = generateCompleteHTML();
+
+        // كتابة الملف
+        writeSingleFile(singleFileContent);
+    }
+
+    private void writeSingleFile(String singleFileContent) {
+    }
+
+    private void extractBasicInfo() {
+        // استخراج اسم المكون
+        componentSelector = currentProgram.getClassName().getName();
+
+        // استخراج الـ template
+        ComponentDecorator component = currentProgram.getComponent();
+        if (component != null && component.getComponentObject() != null) {
+            ComponentObject compObj = component.getComponentObject();
+            templateContent = extractTemplate(compObj.getTemplate());
+
+            // استخراج الـ styles
+            if (compObj.getStyles() != null) {
+                stylesContent = extractStyles(compObj.getStyles());
+            }
+        }
+    }
+
+    private String extractTemplate(HTML html) {
+        StringBuilder template = new StringBuilder();
+        for (HtmlContent content : html.getContents()) {
+            template.append(processHtmlContent(content));
+        }
+        return template.toString();
+    }
+
+    private String extractStyles(Styles styles) {
+        StringBuilder css = new StringBuilder();
+
+        for (CssRule rule : styles.getRules()) {
+            css.append(rule.getRule()).append(" {\n");
+            for (CssDeclaration decl : rule.getDeclarations()) {
+                String property = decl.getCss();
+                String value = extractPropertyValue(decl.getProperty());
+                css.append("  ").append(property).append(": ").append(value).append(";\n");
+            }
+            css.append("}\n");
         }
 
-        appJs.append("// Application logic\n");
-        appJs.append("let appState = ProductsStore.state;\n");
-        appJs.append("function dispatch(type, payload) {\n");
-        appJs.append("  const reducer = ProductsStore.reducer[type];\n");
-        appJs.append("  if (reducer) appState = reducer(appState, payload);\n");
-        appJs.append("}\n");
-        appJs.append("function select(selector) {\n");
-        appJs.append("  return selector(appState);\n");
-        appJs.append("}\n");
-
-        generateMountFunction(); // ✅ توليد JS ديناميكي
-        generateIndexHtml(prog);
-        generateDetailsHtml();
+        return css.toString();
     }
 
-    private void generateMountFunction() {
-        appJs.append("\nfunction mount() {\n");
-        appJs.append("  const app = document.getElementById(\"app\");\n\n");
+    private String extractPropertyValue(PropertyValue propertyValue) {
+        StringBuilder value = new StringBuilder();
 
-        // ngIf
-        appJs.append("  document.querySelectorAll(\"[data-ngif]\").forEach(el => {\n");
-        appJs.append("    const condition = el.getAttribute(\"data-ngif\");\n");
-        appJs.append("    try {\n");
-        appJs.append("      if (!eval(condition)) el.style.display = \"none\";\n");
-        appJs.append("    } catch (e) {\n");
-        appJs.append("      console.warn(\"ngIf eval error:\", e);\n");
-        appJs.append("    }\n");
-        appJs.append("  });\n\n");
-
-        // ngFor
-        appJs.append("  document.querySelectorAll(\"[data-ngfor]\").forEach(el => {\n");
-        appJs.append("    const expr = el.getAttribute(\"data-ngfor\");\n");
-        appJs.append("    const [item, list] = expr.split(\" of \");\n");
-        appJs.append("    const data = select(ProductsStore.selectors[list.trim()]);\n");
-        appJs.append("    const template = el.cloneNode(true);\n");
-        appJs.append("    el.innerHTML = \"\";\n");
-        appJs.append("    data.forEach(val => {\n");
-        appJs.append("      const clone = template.cloneNode(true);\n");
-        appJs.append("      clone.removeAttribute(\"data-ngfor\");\n");
-        appJs.append("      const regex = new RegExp(`{{\\\\s*${item.trim()}\\\\.(\\\\w+)\\\\s*}}`, \"g\");\n");
-        appJs.append("      clone.innerHTML = clone.innerHTML.replace(regex, (_, prop) => val[prop]);\n");
-        appJs.append("      el.appendChild(clone);\n");
-        appJs.append("    });\n");
-        appJs.append("  });\n");
-
-        // onclick
-        appJs.append("  document.querySelectorAll(\"[onclick]\").forEach(el => {\n");
-        appJs.append("    const handler = el.getAttribute(\"onclick\");\n");
-        appJs.append("    el.addEventListener(\"click\", () => {\n");
-        appJs.append("      try {\n");
-        appJs.append("        eval(handler);\n");
-        appJs.append("      } catch (e) {\n");
-        appJs.append("        console.warn(\"onclick eval error:\", e);\n");
-        appJs.append("      }\n");
-        appJs.append("    });\n");
-        appJs.append("  });\n");
-
-        // oninput
-        appJs.append("  document.querySelectorAll(\"[oninput]\").forEach(el => {\n");
-        appJs.append("    const handler = el.getAttribute(\"oninput\");\n");
-        appJs.append("    el.addEventListener(\"input\", () => {\n");
-        appJs.append("      try {\n");
-        appJs.append("        eval(handler);\n");
-        appJs.append("      } catch (e) {\n");
-        appJs.append("        console.warn(\"oninput eval error:\", e);\n");
-        appJs.append("      }\n");
-        appJs.append("    });\n");
-        appJs.append("  });\n");
-
-        appJs.append("}\n");
-        appJs.append("document.addEventListener(\"DOMContentLoaded\", mount);\n");
-    }
-
-    private String generateState(AngularParser.StoreDeclContext storeCtx) {
-        StringBuilder state = new StringBuilder();
-        state.append("  state: {\n");
-
-        var fields = storeCtx.storeBody().stateSection().storeStateField();
-        for (int i = 0; i < fields.size(); i++) {
-            var f = fields.get(i);
-            String name = f.identifier_().getText();
-            String value = f.anyLiteral() != null ? f.anyLiteral().getText() : f.expr().getText();
-            state.append("    ").append(name).append(": ").append(value);
-            if (i < fields.size() - 1) state.append(",");
-            state.append("\n");
+        for (String val : propertyValue.getValues()) {
+            value.append(val).append(" ");
         }
 
-        state.append("  }");
-        return state.toString();
-    }
-
-    private String generateActions(AngularParser.StoreDeclContext storeCtx) {
-        var section = storeCtx.storeBody().actionsSection();
-        if (section == null) return "  actions: {}";
-
-        StringBuilder actions = new StringBuilder();
-        actions.append("  actions: {\n");
-
-        var decls = section.actionDecl();
-        for (int i = 0; i < decls.size(); i++) {
-            var a = decls.get(i);
-            String name = a.identifier_().getText();
-            String body = a.arrowFunctionDecleration().getText();
-            actions.append("    ").append(name).append(": ").append(body);
-            if (i < decls.size() - 1) actions.append(",");
-            actions.append("\n");
+        for (CssBasicColor color : propertyValue.getColors()) {
+            value.append(color.getColor()).append(" ");
         }
 
-        actions.append("  }");
-        return actions.toString();
+        return value.toString().trim();
     }
 
-    private String generateReducer(AngularParser.StoreDeclContext storeCtx) {
-        var section = storeCtx.storeBody().reducerSection();
-        if (section == null) return "  reducer: {}";
-
-        StringBuilder reducer = new StringBuilder();
-        reducer.append("  reducer: {\n");
-
-        var rules = section.reducerRule();
-        for (int i = 0; i < rules.size(); i++) {
-            var r = rules.get(i);
-            String name = r.identifier_().getText();
-            String body = r.arrowFunctionDecleration().getText();
-            reducer.append("    ").append(name).append(": ").append(body);
-            if (i < rules.size() - 1) reducer.append(",");
-            reducer.append("\n");
-        }
-
-        reducer.append("  }");
-        return reducer.toString();
-    }
-
-    private String generateSelectors(AngularParser.StoreDeclContext storeCtx) {
-        var section = storeCtx.storeBody().selectorsSection();
-        if (section == null) return "  selectors: {}";
-
-        StringBuilder selectors = new StringBuilder();
-        selectors.append("  selectors: {\n");
-
-        var decls = section.selectorDecl();
-        for (int i = 0; i < decls.size(); i++) {
-            var s = decls.get(i);
-            String name = s.identifier_().getText();
-            String body = s.arrowFunctionDecleration().getText();
-            selectors.append("    ").append(name).append(": ").append(body);
-            if (i < decls.size() - 1) selectors.append(",");
-            selectors.append("\n");
-        }
-
-        selectors.append("  }");
-        return selectors.toString();
-    }
-
-    private void generateIndexHtml(AngularParser.ProgContext prog) {
-        var comp = prog.componentDecorator();
-        var obj = comp.compoenentObject();
-        var html = obj.html();
-
-        indexHtml.append("<!DOCTYPE html>\n<html>\n<head>\n<title>Angular DSL App</title>\n</head>\n<body>\n");
-        indexHtml.append("<div id=\"app\">\n");
-
-        for (var content : html.htmlContent()) {
-            indexHtml.append(processHtmlContent(content)).append("\n");
-        }
-
-        indexHtml.append("</div>\n<script src=\"app.js\"></script>\n</body>\n</html>");
-    }
-
-    private String processHtmlContent(AngularParser.HtmlContentContext ctx) {
-        if (ctx.htmlElement() != null) {
-            return processHtmlElement(ctx.htmlElement());
-        } else if (ctx.Identifier() != null) {
-            return ctx.Identifier().getText();
-        } else if (ctx.interpolationValue() != null) {
-            String expr = ctx.interpolationValue().getText();
-            return "{{ " + expr + " }}";
+    private String processHtmlContent(HtmlContent content) {
+        if (content.getHtmlElement() != null) {
+            return processHtmlElement(content.getHtmlElement());
+        } else if (content.getInterpolationValue() != null) {
+            return processInterpolation(content.getInterpolationValue());
+        } else if (content.getTextContent() != null) {
+            return content.getTextContent();
         }
         return "";
     }
 
-    private String processHtmlElement(AngularParser.HtmlElementContext elementCtx) {
+    private String processHtmlElement(HtmlElement element) {
+        if (element.getSelfClosingTag() != null) {
+            return "<" + element.getSelfClosingTag().getTag() + " />";
+        } else {
+            return "<" + element.getOpenTag().getHtmlTag().getTag() + ">" +
+                    "</" + element.getCloseTag().getHtmlTag().getTag() + ">";
+        }
+    }
+
+    private String processInterpolation(Interpolation interpolation) {
+        InterpolationValue value = interpolation.getValue();
+        String expression;
+
+        if (value.getIdentifier() != null) {
+            expression = value.getIdentifier().getName();
+        } else {
+            expression = generateIdentifierPath(value.getIdentifierPath());
+        }
+
+        return "{{" + expression + "}}";
+    }
+
+    private String generateIdentifierPath(IdentifierPath path) {
+        StringBuilder result = new StringBuilder();
+        List<Identifier> identifiers = path.getIdentifiers();
+
+        for (int i = 0; i < identifiers.size(); i++) {
+            result.append(identifiers.get(i).getName());
+            if (i < identifiers.size() - 1) result.append(".");
+        }
+
+        return result.toString();
+    }
+
+    // ========== التابع الرئيسي لإنشاء ملف HTML كامل ==========
+    private String generateCompleteHTML() {
         StringBuilder html = new StringBuilder();
 
-        if (elementCtx.selfClosingTag() != null) {
-            var tag = elementCtx.selfClosingTag();
-            String tagName = tag.Identifier().getText();
-            html.append("<").append(tagName);
-
-            for (var attr : tag.boundAttribute()) {
-                String name = attr.attributeName().getText();
-                String value = attr.identifierPath().getText();
-                if (name.equals("value")) {
-                    html.append(" value=\"").append(value).append("\" oninput=\"").append(value).append(" = this.value\"");
-                } else {
-                    html.append(" ").append(name).append("=\"").append(value).append("\"");
-                }
-            }
-
-            for (var event : tag.eventBinding()) {
-                String eventName = event.eventName().getText();
-                String handler = event.getChild(4).getText(); // functionCall or identifierPath
-                html.append(" onclick=\"").append(handler).append("\"");
-            }
-
-            html.append(" />");
-        } else {
-            var open = elementCtx.openTag();
-            var close = elementCtx.closeTag();
-            String tagName = open.htmlTag().getText();
-            html.append("<").append(tagName);
-
-            // ngIf → تحويل إلى شرط داخل app.js لاحقًا
-            if (open.structuralDirectives() != null && open.structuralDirectives().ifDirective() != null) {
-                String condition = open.structuralDirectives().ifDirective().getChild(2).getText();
-                html.append(" data-ngif=\"").append(condition).append("\"");
-            }
-
-            // ngFor → تحويل إلى تكرار داخل app.js لاحقًا
-            if (open.structuralDirectives() != null && open.structuralDirectives().forDirective() != null) {
-                String item = open.structuralDirectives().forDirective().identifier_(0).getText();
-                String list = open.structuralDirectives().forDirective().identifier_(1).getText();
-                html.append(" data-ngfor=\"").append(item).append(" of ").append(list).append("\"");
-            }
-
-            for (var attr : open.boundAttribute()) {
-                String name = attr.attributeName().getText();
-                String value = attr.identifierPath().getText();
-                if (name.equals("value")) {
-                    html.append(" value=\"").append(value).append("\" oninput=\"").append(value).append(" = this.value\"");
-                } else {
-                    html.append(" ").append(name).append("=\"").append(value).append("\"");
-                }
-            }
-
-            for (var event : open.eventBinding()) {
-                String eventName = event.eventName().getText();
-                String handler = event.getChild(4).getText();
-                html.append(" onclick=\"").append(handler).append("\"");
-            }
-
-            html.append(">");
-
-            for (var content : elementCtx.htmlContent()) {
-                html.append(processHtmlContent(content));
-            }
-
-            html.append("</").append(tagName).append(">");
-        }
+        html.append("<!DOCTYPE html>\n")
+                .append("<html lang=\"en\">\n")
+                .append("<head>\n")
+                .append("    <meta charset=\"UTF-8\">\n")
+                .append("    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n")
+                .append("    <title>Angular DSL App</title>\n")
+                .append("    <style>\n")
+                .append("        /* Global Styles */\n")
+                .append("        * { box-sizing: border-box; margin: 0; padding: 0; }\n")
+                .append("        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }\n")
+                .append("        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }\n")
+                .append("        \n")
+                .append("        /* Component Styles */\n")
+                .append(stylesContent != null ? stylesContent : "        /* No styles defined */\n")
+                .append("    </style>\n")
+                .append("</head>\n")
+                .append("<body>\n")
+                .append("    <div class=\"container\">\n")
+                .append("        <h1>Product List</h1>\n")
+                .append("        <div id=\"app\">\n")
+                .append("            <!-- Products will be rendered here -->\n")
+                .append("        </div>\n")
+                .append("    </div>\n")
+                .append("\n")
+                .append("    <script>\n")
+                .append("        // بيانات المنتجات\n")
+                .append("        const productsData = ").append(generateProductsData()).append(";\n")
+                .append("\n")
+                .append("        // تطبيق JavaScript\n")
+                .append("        function renderProducts() {\n")
+                .append("            const appElement = document.getElementById('app');\n")
+                .append("            if (!appElement) return;\n")
+                .append("\n")
+                .append("            let html = '<ul style=\"list-style: none; padding: 0;\">';\n")
+                .append("            \n")
+                .append("            productsData.forEach(product => {\n")
+                .append("                html += `\n")
+                .append("                    <li style=\"border: 1px solid #ddd; margin: 10px 0; padding: 15px; border-radius: 5px;\">\n")
+                .append("                        <h3 style=\"color: #333;\">${product.name}</h3>\n")
+                .append("                        <p style=\"color: #666;\">${product.desc}</p>\n")
+                .append("                        <img src=\"${product.image}\" alt=\"${product.name}\" style=\"width: 100px; height: 100px; margin: 10px 0;\">\n")
+                .append("                        <br>\n")
+                .append("                        <button onclick=\"showDetails('${product.name}')\" style=\"background: #007bff; color: white; border: none; padding: 8px 15px; border-radius: 3px; cursor: pointer;\">\n")
+                .append("                            View Details\n")
+                .append("                        </button>\n")
+                .append("                    </li>\n")
+                .append("                `;\n")
+                .append("            });\n")
+                .append("            \n")
+                .append("            html += '</ul>';\n")
+                .append("            appElement.innerHTML = html;\n")
+                .append("        }\n")
+                .append("\n")
+                .append("        function showDetails(productName) {\n")
+                .append("            const product = productsData.find(p => p.name === productName);\n")
+                .append("            if (product) {\n")
+                .append("                alert(`Product Details:\\nName: ${product.name}\\nDescription: ${product.desc}\\nImage: ${product.image}`);\n")
+                .append("            }\n")
+                .append("        }\n")
+                .append("\n")
+                .append("        // تهيئة التطبيق\n")
+                .append("        document.addEventListener('DOMContentLoaded', function() {\n")
+                .append("            console.log('Application started with', productsData.length, 'products');\n")
+                .append("            renderProducts();\n")
+                .append("        });\n")
+                .append("    </script>\n")
+                .append("</body>\n")
+                .append("</html>");
 
         return html.toString();
     }
 
-    private void generateDetailsHtml() {
-        detailsHtml.append("<!DOCTYPE html>\n<html>\n<head>\n<title>Details</title>\n</head>\n<body>\n");
-        detailsHtml.append("<h2>Product Details</h2>\n");
-        detailsHtml.append("<script>\n");
-        detailsHtml.append("const data = JSON.parse(localStorage.getItem('selectedItem'));\n");
-        detailsHtml.append("if (data) {\n");
-        detailsHtml.append("  document.body.innerHTML += `<pre>${JSON.stringify(data, null, 2)}</pre>`;\n");
-        detailsHtml.append("} else {\n");
-        detailsHtml.append("  document.body.innerHTML += `<p>No product selected.</p>`;\n");
-        detailsHtml.append("}\n");
-        detailsHtml.append("</script>\n</body>\n</html>");
+    // ========== توليد بيانات المنتجات ==========
+    private String generateProductsData() {
+        if (currentProgram == null) return "[]";
+
+        StringBuilder productsJson = new StringBuilder();
+        productsJson.append("[\n");
+
+        boolean foundProducts = false;
+
+        // البحث عن مصفوفة products
+        for (Statement stmt : currentProgram.getStatements()) {
+            if (stmt.getArrayDeclaration() != null) {
+                ArrayDeclaration arrayDecl = stmt.getArrayDeclaration();
+                if (arrayDecl.getIdentifier().getName().equals("products")) {
+
+                    ArrayLiteral arrayLiteral = arrayDecl.getArrayLiteral();
+                    if (arrayLiteral != null) {
+                        ArrayList arrayList = arrayLiteral.getArray();
+                        if (arrayList != null) {
+                            List<ArrayElement> elements = arrayList.getElements();
+
+                            for (int i = 0; i < elements.size(); i++) {
+                                ArrayElement element = elements.get(i);
+                                if (element.getAnyLiteral() != null &&
+                                        element.getAnyLiteral().getObjectLiteral() != null) {
+
+                                    ObjectLiteral objLiteral = element.getAnyLiteral().getObjectLiteral();
+                                    productsJson.append("    {\n");
+
+                                    ObjectBody objBody = objLiteral.getObject();
+                                    List<ObjectKeyValue> keyValues = objBody.getObjects();
+
+                                    for (int j = 0; j < keyValues.size(); j++) {
+                                        ObjectKeyValue kv = keyValues.get(j);
+                                        String key = kv.getKey().replaceAll("[\"']", "");
+                                        String value = extractObjectValue(kv.getValue());
+
+                                        productsJson.append("        \"").append(key).append("\": \"").append(value).append("\"");
+                                        if (j < keyValues.size() - 1) productsJson.append(",");
+                                        productsJson.append("\n");
+                                    }
+
+                                    productsJson.append("    }");
+                                    if (i < elements.size() - 1) productsJson.append(",");
+                                    productsJson.append("\n");
+
+                                    foundProducts = true;
+                                }
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        productsJson.append("]");
+
+        if (!foundProducts) {
+            // بيانات افتراضية للاختبار
+            return "[\n" +
+                    "    {\n" +
+                    "        \"name\": \"Laptop\",\n" +
+                    "        \"desc\": \"High performance laptop\",\n" +
+                    "        \"image\": \"laptop.png\"\n" +
+                    "    },\n" +
+                    "    {\n" +
+                    "        \"name\": \"Smartphone\",\n" +
+                    "        \"desc\": \"Latest model smartphone\", \n" +
+                    "        \"image\": \"phone.png\"\n" +
+                    "    },\n" +
+                    "    {\n" +
+                    "        \"name\": \"Tablet\",\n" +
+                    "        \"desc\": \"Lightweight and fast tablet\",\n" +
+                    "        \"image\": \"tablet.png\"\n" +
+                    "    }\n" +
+                    "]";
+        }
+
+        return productsJson.toString();
+    }
+
+    private String extractObjectValue(Expr expr) {
+        if (expr == null) return "";
+
+        if (expr.getStringLiteral() != null) {
+            return expr.getStringLiteral().replaceAll("[\"']", "");
+        } else if (expr.getIdentifier() != null) {
+            return expr.getIdentifier().getName();
+        }
+        return "";
     }
 
     public void writeToDisk(Path outputDir) throws Exception {
-        Files.writeString(outputDir.resolve("index.html"), indexHtml.toString(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-        Files.writeString(outputDir.resolve("app.js"), appJs.toString(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-        Files.writeString(outputDir.resolve("details.html"), detailsHtml.toString(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+        Files.createDirectories(outputDir);
+
+        // إنشاء ملف HTML واحد
+        String singleFileContent = generateCompleteHTML();
+        Files.writeString(outputDir.resolve("app.html"), singleFileContent,
+                StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+
+        System.out.println("✅ Single file generated: app.html");
+        System.out.println("📁 Location: " + outputDir.toAbsolutePath());
+    }
+
+    // دالة مساعدة للحصول على المحتوى المُنشأ (لأغراض الاختبار)
+    public String getGeneratedContent() {
+        return generateCompleteHTML();
     }
 }

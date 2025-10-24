@@ -2,18 +2,17 @@ import CodeGeneration.CodeGenerator;
 import ErrorHandling.CustomErrorListener;
 import LexerAndParser.AngularLexer;
 import LexerAndParser.AngularParser;
-import Viewer.ASTViewer;
+import Visitor.BaseVisitor;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.IOException;
 import java.nio.file.Paths;
 
 public class Main {
 
-    static String inputFile = "D:\\F.I.T.E\\Fifth Year\\S2\\Compiler\\Last_Angular_Compiler\\src\\Tests\\test5.txt";
+    static String inputFile = "D:\\F.I.T.E\\Fifth Year\\S2\\Compiler\\Last_Angular_Compiler\\src\\Tests\\test7.txt";
     static String errorFile = "D:\\F.I.T.E\\Fifth Year\\S2\\Compiler\\Last_Angular_Compiler\\src\\Errors\\Errors.txt";
     static String outputFile = "D:\\F.I.T.E\\Fifth Year\\S2\\Compiler\\Last_Angular_Compiler\\src\\OutputFiles";
 
@@ -33,12 +32,16 @@ public class Main {
             parser.removeErrorListeners();
             parser.addErrorListener(errorListener);
 
-            AngularParser.ProgContext tree = parser.prog();
+            AngularParser.ProgContext parseTree = parser.prog();
             errorListener.close();
 
-            // توليد الكود
+            // بناء AST باستخدام Visitor
+            BaseVisitor visitor = new BaseVisitor();
+            AST.Program ast = visitor.visitProg(parseTree);
+
+            // توليد الكود من AST
             CodeGenerator generator = new CodeGenerator();
-            generator.emit(tree);
+            generator.emit(ast);
             generator.writeToDisk(Paths.get(outputFile));
 
             System.out.println("✅ Code generation completed. Files written to: " + outputFile);
@@ -47,7 +50,7 @@ public class Main {
             System.err.println("IO error: " + e.getMessage());
         } catch (Exception e) {
             System.err.println("Code generation error: " + e.getMessage());
+            e.printStackTrace();
         }
     }
-
 }

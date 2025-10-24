@@ -6,7 +6,7 @@ import AST.Identifier.IdentifierPath;
 public class EventBinding {
     private EventName eventName;
     private FunctionCall functionCall = null;
-    private IdentifierPath identifierPath = null;
+    private String string = null;
 
     public EventName getEventName() {
         return eventName;
@@ -24,12 +24,12 @@ public class EventBinding {
         this.functionCall = functionCall;
     }
 
-    public IdentifierPath getIdentifierPath() {
-        return identifierPath;
+    public String getIdentifierPath() {
+        return string;
     }
 
-    public void setIdentifierPath(IdentifierPath identifierPath) {
-        this.identifierPath = identifierPath;
+    public void setIdentifierPath(String s) {
+        this.string = string;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class EventBinding {
         } else {
             return "EventBinding { " +
                     "eventName = " + eventName +
-                    ", identifierPath = " + identifierPath +
+                    ", string = " + string +
                     '}';
         }
     }

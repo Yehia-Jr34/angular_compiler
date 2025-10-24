@@ -3,8 +3,9 @@ package AST.HTMLElementsAndBindings.Attribute;
 import AST.Identifier.IdentifierPath;
 
 public class BoundAttribute {
-    private AttributeName name;
-    private IdentifierPath bound;
+    private AttributeName name = null;
+    private IdentifierPath bound = null;
+    private String value = null;
 
     public AttributeName getName() {
         return name;
@@ -22,11 +23,20 @@ public class BoundAttribute {
         this.bound = bound;
     }
 
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
     @Override
     public String toString() {
         return "BoundAttribute { " +
                 "name = " + name +
                 ", bound = " + bound +
+                ", value = " + value +
                 '}';
     }
 }
