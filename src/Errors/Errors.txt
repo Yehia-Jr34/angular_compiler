@@ -37,3 +37,5 @@ Syntax error at line 6:8 - no viable alternative at input '[{name'
 Syntax error at line 6:24 - mismatched input 'desc' expecting Identifier
 Syntax error at line 6:50 - mismatched input 'image' expecting Identifier
 Syntax error at line 6:71 - mismatched input ',' expecting {'}', 'actions', 'reducer', 'selectors'}
+Syntax error at line 64:2 - no viable alternative at input 'products=[{name:"Laptop",desc:"High performance",image:"https://cdn.pixabay.com/photo/2014/05/02/21/50/home-office-336377_1280.jpg"},{name:"Phone",desc:"Latest model",image:"https://cdn.pixabay.com/photo/2017/01/22/19/20/smartphone-2007617_1280.jpg"},{name:"Tablet",desc:"Lightweight and fast",image:"https://cdn.pixabay.com/photo/2015/01/21/14/14/ipad-606764_1280.jpg"}selectProduct'
+Syntax error at line 64:2 - missing ']' at 'selectProduct'
