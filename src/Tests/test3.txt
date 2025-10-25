@@ -1,0 +1,46 @@
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-products',
+  template: `
+       <h1> addProduct </h1>
+      <div>
+        <label>name:</label>
+        <input type="text" [(ngModel)]="product.name">
+      </div>
+
+      <div>
+        <label>desc:</label>
+        <input type="text" [(ngModel)]="product.desc">
+      </div>
+
+      <div>
+        <label>URL:</label>
+        <input type="text" [(ngModel)]="product.image">
+      </div>
+
+      <button (click)="addProduct()">add</button>
+  `,
+  styles: `
+     div {
+      margin: 10px;
+    }
+    label {
+      width: 80px;
+    }
+    input {
+      padding: 5px;
+    }
+    button {
+      padding: 8px 15px;
+      margin: 10px;
+    }
+  `
+})
+export class ProductsComponent {
+  product = {
+    name: '',
+    desc: '',
+    image: ''
+  };
+}

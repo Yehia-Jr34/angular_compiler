@@ -17,7 +17,7 @@ public class SemanticAnalyzer {
             "if", "else", "for", "while", "do", "break", "continue",
             "public", "private", "protected", "var", "let", "const",
             "number", "string", "boolean", "any", "console", "log",
-            "name", "prod", "ProductsComponent", "products", "selectProduct",
+            "name", "prod", "ProductsComponent", "products", "selectProduct", "product",
 
             // Angular specific
             "ngFor", "ngIf", "store", "state", "actions", "reducer",

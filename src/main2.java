@@ -1,8 +1,9 @@
+import CodeGeneration.AddProductCodeGenerator;
 import CodeGeneration.CodeGenerator;
+import ErrorHandling.CustomErrorListener;
 import LexerAndParser.AngularLexer;
 import LexerAndParser.AngularParser;
 import Visitor.BaseVisitor;
-import ErrorHandling.CustomErrorListener;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -10,9 +11,8 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-public class Main {
-
-    static String inputFile = "D:\\F.I.T.E\\Fifth Year\\S2\\Compiler\\Last_Angular_Compiler\\src\\Tests\\test1.txt";
+public class main2 {
+    static String inputFile = "D:\\F.I.T.E\\Fifth Year\\S2\\Compiler\\Last_Angular_Compiler\\src\\Tests\\test3.txt";
     static String errorFile = "D:\\F.I.T.E\\Fifth Year\\S2\\Compiler\\Last_Angular_Compiler\\src\\Errors\\Errors.txt";
     static String outputFile = "D:\\F.I.T.E\\Fifth Year\\S2\\Compiler\\Last_Angular_Compiler\\src\\OutputFiles";
 
@@ -60,7 +60,7 @@ public class Main {
             visitor.printSymbolTable();
 
             // توليد الكود من AST
-            CodeGenerator generator = new CodeGenerator();
+            AddProductCodeGenerator generator = new AddProductCodeGenerator();
             generator.emit(ast);
             generator.writeToDisk(Paths.get(outputFile));
 
