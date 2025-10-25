@@ -54,9 +54,73 @@ import LexerAndParser.AngularParser;
 import LexerAndParser.AngularParserBaseVisitor;
 import SymbolTable.BaseSymbolTable;
 import SymbolTable.Row;
+import SymbolTable.SymbolType;
 
 public class BaseVisitor extends AngularParserBaseVisitor {
     public BaseSymbolTable symbolTable = new BaseSymbolTable();
+    private String currentScope = "global";
+    private int scopeCounter = 0;
+
+    // دوال مساعدة لإدارة النطاق
+    private void enterScope(String scopeName) {
+        currentScope = scopeName + "_" + (scopeCounter++);
+    }
+
+    private void exitScope() {
+        currentScope = "global";
+    }
+
+    private String getCurrentScope() {
+        return currentScope;
+    }
+
+    // دالة مساعدة لإضافة رمز إلى جدول الرموز
+    private void addSymbolToTable(String name, SymbolType symbolType, String dataType,
+                                  int line, int col, String value) {
+        Row row = new Row(name, symbolType, dataType, line, col, getCurrentScope());
+        if (value != null) {
+            row.setValue(value);
+        }
+        symbolTable.addSymbol(row);
+    }
+
+    // دالة لاستخراج نوع البيانات من AnyLiteral
+    private String getDataTypeFromAnyLiteral(AnyLiteral anyLiteral) {
+        if (anyLiteral == null) return "any";
+
+        if (anyLiteral.getStringLiteral() != null) return "string";
+        if (anyLiteral.getDecimalLiteral() != null) return "number";
+        if (anyLiteral.getBoolLiteral() != null) return "boolean";
+        if (anyLiteral.getNullLiteral() != null) return "null";
+        if (anyLiteral.getArrayLiteral() != null) return "array";
+        if (anyLiteral.getObjectLiteral() != null) return "object";
+
+        return "any";
+    }
+
+    // دالة لاستخراج القيمة من AnyLiteral
+    private String getValueFromAnyLiteral(AnyLiteral anyLiteral) {
+        if (anyLiteral == null) return null;
+
+        if (anyLiteral.getStringLiteral() != null) return anyLiteral.getStringLiteral();
+        if (anyLiteral.getDecimalLiteral() != null) return anyLiteral.getDecimalLiteral();
+        if (anyLiteral.getBoolLiteral() != null) return anyLiteral.getBoolLiteral();
+        if (anyLiteral.getNullLiteral() != null) return anyLiteral.getNullLiteral();
+        if (anyLiteral.getArrayLiteral() != null) return "[array]";
+        if (anyLiteral.getObjectLiteral() != null) return "[object]";
+
+        return null;
+    }
+
+    // دالة لطباعة جدول الرموز
+    public void printSymbolTable() {
+        symbolTable.print();
+    }
+
+    // دالة للحصول على جدول الرموز
+    public BaseSymbolTable getSymbolTable() {
+        return symbolTable;
+    }
 
     @Override
     public Program visitProg(AngularParser.ProgContext ctx) {
@@ -82,6 +146,16 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         Identifier child4 = visitIdentifier_(ctx.identifier_());
         object.setClassName(child4);
 
+        // تسجيل اسم الكلاس في جدول الرموز
+        addSymbolToTable(
+                child4.getName(),
+                SymbolType.COMPONENT,
+                "class",
+                ctx.start.getLine(),
+                ctx.start.getCharPositionInLine(),
+                null
+        );
+
         if (!ctx.statement().isEmpty()) {
             for (int i = 0; i < ctx.statement().size(); i++) {
                 Statement child5 = visitStatement(ctx.statement(i));
@@ -99,18 +173,18 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         Identifier child1 = visitIdentifier_(ctx.identifier_());
         object.setIdentifier(child1);
 
-        Row row = new Row();
-        row.setDataType("imported file");
-        row.setType("imported file");
-        row.setValue(ctx.StringLiteral().getText());
-        row.setLine(ctx.getStart().getLine());
-        row.setCol(ctx.getStart().getCharPositionInLine());
-        row.setName(object.getIdentifier().getName());
-
-        symbolTable.addSymbol(row);
-
         String child2 = ctx.StringLiteral().getText();
         object.setFileName(child2);
+
+        // تسجيل الـ import في جدول الرموز
+        addSymbolToTable(
+                child1.getName(),
+                SymbolType.IMPORT,
+                "module",
+                ctx.start.getLine(),
+                ctx.start.getCharPositionInLine(),
+                child2
+        );
 
         return object;
     }
@@ -122,18 +196,18 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         Identifier child1 = visitIdentifier_(ctx.identifier_());
         object.setIdentifier(child1);
 
-        Row row = new Row();
-        row.setDataType("stored file");
-        row.setType("stored file");
-        row.setName(object.getIdentifier().getName());
-        row.setLine(ctx.getStart().getLine());
-        row.setCol(ctx.getStart().getCharPositionInLine());
-        row.setValue("does not have value");
-
-        symbolTable.addSymbol(row);
-
         StoreBody child2 = visitStoreBody(ctx.storeBody());
         object.setBody(child2);
+
+        // تسجيل الـ store في جدول الرموز
+        addSymbolToTable(
+                child1.getName(),
+                SymbolType.STORE,
+                "store",
+                ctx.start.getLine(),
+                ctx.start.getCharPositionInLine(),
+                null
+        );
 
         return object;
     }
@@ -182,26 +256,32 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         Identifier child1 = visitIdentifier_(ctx.identifier_());
         object.setIdentifier(child1);
 
-        Row row = new Row();
-        row.setName(object.getIdentifier().getName());
-        row.setType("Stored State file");
-        row.setLine(ctx.getStart().getLine());
-        row.setCol(ctx.getStart().getCharPositionInLine());
-        row.setDataType("stored file");
+        String dataType = "any";
+        String value = null;
 
         if (ctx.anyLiteral() != null) {
             AnyLiteral child2 = visitAnyLiteral(ctx.anyLiteral());
-            row.setValue(ctx.anyLiteral().getText());
             object.setAnyLiteral(child2);
+            dataType = getDataTypeFromAnyLiteral(child2);
+            value = getValueFromAnyLiteral(child2);
         }
 
         if (ctx.expr() != null) {
             Expr child3 = visitExpr(ctx.expr());
-            row.setValue(ctx.expr().getText());
             object.setExpression(child3);
+            dataType = "expression";
+            value = "[expression]";
         }
 
-        symbolTable.addSymbol(row);
+        // تسجيل متغير state في جدول الرموز
+        addSymbolToTable(
+                child1.getName(),
+                SymbolType.VARIABLE,
+                dataType,
+                ctx.start.getLine(),
+                ctx.start.getCharPositionInLine(),
+                value
+        );
 
         return object;
     }
@@ -227,18 +307,18 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         Identifier child1 = visitIdentifier_(ctx.identifier_());
         object.setIdentifier(child1);
 
-        Row row = new Row();
-        row.setName(object.getIdentifier().getName());
-        row.setType("Action declaration");
-        row.setLine(ctx.getStart().getLine());
-        row.setCol(ctx.getStart().getCharPositionInLine());
-        row.setDataType("action declaration");
-        row.setValue("arrow function");
-
-        symbolTable.addSymbol(row);
-
         ArrowFunctionDec child2 = visitArrowFunctionDecleration(ctx.arrowFunctionDecleration());
         object.setArrowFunctionDec(child2);
+
+        // تسجيل action في جدول الرموز
+        addSymbolToTable(
+                child1.getName(),
+                SymbolType.FUNCTION,
+                "action",
+                ctx.start.getLine(),
+                ctx.start.getCharPositionInLine(),
+                null
+        );
 
         return object;
     }
@@ -264,18 +344,18 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         Identifier child1 = visitIdentifier_(ctx.identifier_());
         object.setIdentifier(child1);
 
-        Row row = new Row();
-        row.setName(object.getIdentifier().getName());
-        row.setType("reducer rule");
-        row.setLine(ctx.getStart().getLine());
-        row.setCol(ctx.getStart().getCharPositionInLine());
-        row.setDataType("reducer rule");
-        row.setValue("arrow function");
-
-        symbolTable.addSymbol(row);
-
         ArrowFunctionDec child2 = visitArrowFunctionDecleration(ctx.arrowFunctionDecleration());
         object.setArrowFunctionDec(child2);
+
+        // تسجيل reducer rule في جدول الرموز
+        addSymbolToTable(
+                child1.getName(),
+                SymbolType.FUNCTION,
+                "reducer",
+                ctx.start.getLine(),
+                ctx.start.getCharPositionInLine(),
+                null
+        );
 
         return object;
     }
@@ -299,18 +379,18 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         Identifier child1 = visitIdentifier_(ctx.identifier_());
         object.setIdentifier(child1);
 
-        Row row = new Row();
-        row.setName(object.getIdentifier().getName());
-        row.setType("selector declaration");
-        row.setLine(ctx.getStart().getLine());
-        row.setCol(ctx.getStart().getCharPositionInLine());
-        row.setDataType("selector declaration");
-        row.setValue("arrow function");
-
-        symbolTable.addSymbol(row);
-
         ArrowFunctionDec child2 = visitArrowFunctionDecleration(ctx.arrowFunctionDecleration());
         object.setArrowFunction(child2);
+
+        // تسجيل selector في جدول الرموز
+        addSymbolToTable(
+                child1.getName(),
+                SymbolType.SELECTOR,
+                "selector",
+                ctx.start.getLine(),
+                ctx.start.getCharPositionInLine(),
+                null
+        );
 
         return object;
     }
@@ -321,16 +401,6 @@ public class BaseVisitor extends AngularParserBaseVisitor {
 
         ComponentObject child2 = visitCompoenentObject(ctx.compoenentObject());
         object.setComponentObject(child2);
-
-        Row row = new Row();
-//        row.setName(object.getIdentifier().getName());
-        row.setType("component decoration");
-        row.setLine(ctx.getStart().getLine());
-        row.setCol(ctx.getStart().getCharPositionInLine());
-        row.setDataType("component decoration");
-        row.setValue(ctx.compoenentObject().getText());
-
-        symbolTable.addSymbol(row);
 
         return object;
     }
@@ -349,6 +419,16 @@ public class BaseVisitor extends AngularParserBaseVisitor {
             Styles child3 = visitStyles(ctx.styles());
             object.setStyles(child3);
         }
+
+        // تسجيل component في جدول الرموز
+        addSymbolToTable(
+                child1.replace("\"", ""), // إزالة علامات الاقتباس
+                SymbolType.COMPONENT,
+                "component",
+                ctx.start.getLine(),
+                ctx.start.getCharPositionInLine(),
+                null
+        );
 
         return object;
     }
@@ -456,25 +536,8 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         ForParameter object = new ForParameter();
 
         if (ctx.variableDecl() != null) {
-
-            Row row = new Row();
-
             VariableDecl child1 = visitVariableDecl(ctx.variableDecl());
-
-            row.setName(child1.toString());
-            row.setType("variable declaration");
-            row.setLine(ctx.getStart().getLine());
-            row.setCol(ctx.getStart().getCharPositionInLine());
-            if (child1.getExpr() != null) {
-                row.setValue(child1.getExpr().toString());
-            } else if (child1.getValue() != null) {
-                row.setValue(child1.getValue().toString());
-            }
-
-            symbolTable.addSymbol(row);
-
             object.setVarDecl(child1);
-
         }
 
         if (ctx.expr(0) != null) {
@@ -551,24 +614,30 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         Identifier child1 = visitIdentifier_(ctx.identifier_());
         object.setName(child1);
 
-        Row row = new Row();
-        row.setName(ctx.identifier_().getText());
-        row.setValue("variable declaration");
-        row.setLine(ctx.getStart().getLine());
-        row.setCol(ctx.getStart().getCharPositionInLine());
-        row.setType("not assigned");
+        String dataType = "any";
+        String value = null;
 
         if (ctx.expr() != null) {
             Expr child2 = visitExpr(ctx.expr());
-            row.setValue(ctx.expr().getText());
             object.setExpr(child2);
+            dataType = "expression";
+            value = "[expression]";
         } else if (ctx.anyLiteral() != null) {
             AnyLiteral child3 = visitAnyLiteral(ctx.anyLiteral());
-            row.setValue(ctx.anyLiteral().getText());
             object.setValue(child3);
+            dataType = getDataTypeFromAnyLiteral(child3);
+            value = getValueFromAnyLiteral(child3);
         }
 
-        symbolTable.addSymbol(row);
+        // تسجيل المتغير العادي في جدول الرموز
+        addSymbolToTable(
+                child1.getName(),
+                SymbolType.VARIABLE,
+                dataType,
+                ctx.start.getLine(),
+                ctx.start.getCharPositionInLine(),
+                value
+        );
 
         return object;
     }
@@ -580,27 +649,31 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         Identifier child1 = visitIdentifier_(ctx.identifier_());
         object.setIdentifier(child1);
 
-        Row row = new Row();
-        row.setName(ctx.identifier_().getText());
-        row.setValue("variable declaration");
-        row.setLine(ctx.getStart().getLine());
-        row.setCol(ctx.getStart().getCharPositionInLine());
-        row.setType(ctx.dataTypes().getText());
+        DataType child4 = visitDataTypes(ctx.dataTypes());
+        object.setDataType(child4);
+
+        String dataType = child4.getType();
+        String value = null;
 
         if (ctx.expr() != null) {
             Expr child2 = visitExpr(ctx.expr());
-            row.setValue(ctx.expr().getText());
             object.setExpr(child2);
+            value = "[expression]";
         } else if (ctx.anyLiteral() != null) {
             AnyLiteral child3 = visitAnyLiteral(ctx.anyLiteral());
-            row.setValue(ctx.anyLiteral().getText());
             object.setAnyLiteral(child3);
+            value = getValueFromAnyLiteral(child3);
         }
 
-        symbolTable.addSymbol(row);
-
-        DataType child4 = visitDataTypes(ctx.dataTypes());
-        object.setDataType(child4);
+        // تسجيل المتغير مع نوع البيانات في جدول الرموز
+        addSymbolToTable(
+                child1.getName(),
+                SymbolType.VARIABLE,
+                dataType,
+                ctx.start.getLine(),
+                ctx.start.getCharPositionInLine(),
+                value
+        );
 
         return object;
     }
@@ -629,24 +702,13 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         Identifier child1 = visitIdentifier_(ctx.identifier_());
         object.setIdentifier(child1);
 
-        Row row = new Row();
-        row.setName(ctx.identifier_().getText());
-        row.setValue("initialization");
-        row.setLine(ctx.getStart().getLine());
-        row.setCol(ctx.getStart().getCharPositionInLine());
-        row.setType("not assigned");
-
         if (ctx.expr() != null) {
             Expr child2 = visitExpr(ctx.expr());
-            row.setValue(ctx.expr().getText());
             object.setExpr(child2);
         } else if (ctx.anyLiteral() != null) {
             AnyLiteral child3 = visitAnyLiteral(ctx.anyLiteral());
-            row.setValue(ctx.anyLiteral().getText());
             object.setAnyLiteral(child3);
         }
-
-        symbolTable.addSymbol(row);
 
         return object;
     }
@@ -798,6 +860,20 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         ArrayList child = visitArrayList(ctx.arrayList());
         object.setArray(child);
 
+        // تسجيل المصفوفة في جدول الرموز إذا كانت جزء من تعريف متغير
+        if (ctx.parent != null && ctx.parent instanceof AngularParser.AnyLiteralContext) {
+            // يمكن إضافة معلومات عن المصفوفة إذا لزم الأمر
+            String arrayInfo = "array_with_" + child.getElements().size() + "_elements";
+            addSymbolToTable(
+                    "[array_literal]",
+                    SymbolType.VARIABLE,
+                    "array",
+                    ctx.start.getLine(),
+                    ctx.start.getCharPositionInLine(),
+                    arrayInfo
+            );
+        }
+
         return object;
     }
 
@@ -808,6 +884,18 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         for (int i = 0; i < ctx.arrayElement().size(); i++) {
             ArrayElement child = visitArrayElement(ctx.arrayElement(i));
             object.addElement(child);
+
+            // تسجيل معلومات عن عناصر المصفوفة إذا كانت معرفات
+            if (child.getId() != null) {
+                addSymbolToTable(
+                        child.getId().getName() + "_array_element",
+                        SymbolType.VARIABLE,
+                        "array_element",
+                        ctx.start.getLine(),
+                        ctx.start.getCharPositionInLine(),
+                        "index_" + i
+                );
+            }
         }
 
         return object;
@@ -820,12 +908,47 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         if (ctx.anyLiteral() != null) {
             AnyLiteral child = visitAnyLiteral(ctx.anyLiteral());
             object.setAnyLiteral(child);
+
+            // تسجيل نوع بيانات عنصر المصفوفة
+            String elementType = getDataTypeFromAnyLiteral(child);
+            String elementValue = getValueFromAnyLiteral(child);
+
+            addSymbolToTable(
+                    "[array_element]",
+                    SymbolType.VARIABLE,
+                    elementType,
+                    ctx.start.getLine(),
+                    ctx.start.getCharPositionInLine(),
+                    elementValue
+            );
+
         } else if (ctx.expr() != null) {
             Expr child = visitExpr(ctx.expr());
             object.setExpr(child);
+
+            // تسجيل أن العنصر عبارة عن تعبير
+            addSymbolToTable(
+                    "[array_element]",
+                    SymbolType.VARIABLE,
+                    "expression",
+                    ctx.start.getLine(),
+                    ctx.start.getCharPositionInLine(),
+                    "[expression]"
+            );
+
         } else if (ctx.identifier_() != null) {
             Identifier child = visitIdentifier_(ctx.identifier_());
             object.setId(child);
+
+            // تسجيل المعرف المستخدم في عنصر المصفوفة
+            addSymbolToTable(
+                    child.getName() + "_array_ref",
+                    SymbolType.VARIABLE,
+                    "reference",
+                    ctx.start.getLine(),
+                    ctx.start.getCharPositionInLine(),
+                    "used_in_array"
+            );
         }
 
         return object;
@@ -838,6 +961,19 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         ObjectBody child = visitObjectBody(ctx.objectBody());
         object.setObject(child);
 
+        // تسجيل الغرض في جدول الرموز إذا كان جزء من تعريف متغير
+        if (ctx.parent != null && ctx.parent instanceof AngularParser.AnyLiteralContext) {
+            String objectInfo = "object_with_" + child.getObjects().size() + "_properties";
+            addSymbolToTable(
+                    "[object_literal]",
+                    SymbolType.VARIABLE,
+                    "object",
+                    ctx.start.getLine(),
+                    ctx.start.getCharPositionInLine(),
+                    objectInfo
+            );
+        }
+
         return object;
     }
 
@@ -847,17 +983,18 @@ public class BaseVisitor extends AngularParserBaseVisitor {
 
         for (int i = 0; i < ctx.objectKeyValue().size(); i++) {
             ObjectKeyValue child = visitObjectKeyValue(ctx.objectKeyValue(i));
-
-            Row row = new Row();
-            row.setLine(ctx.getStart().getLine());
-            row.setCol(ctx.getStart().getCharPositionInLine());
-            row.setType("Object");
-            row.setDataType("Object");
-            row.setName(child.getKey());
-            row.setValue(child.getValue().toString());
-            symbolTable.addSymbol(row);
-
             object.addObject(child);
+
+            // تسجيل معلومات عن خصائص الغرض
+            String propertyName = child.getKey();
+            addSymbolToTable(
+                    propertyName + "_property",
+                    SymbolType.VARIABLE,
+                    "object_property",
+                    ctx.start.getLine(),
+                    ctx.start.getCharPositionInLine(),
+                    "property_" + (i + 1)
+            );
         }
 
         return object;
@@ -867,18 +1004,74 @@ public class BaseVisitor extends AngularParserBaseVisitor {
     public ObjectKeyValue visitObjectKeyValue(AngularParser.ObjectKeyValueContext ctx) {
         ObjectKeyValue object = new ObjectKeyValue();
 
+        String key = "";
         if (ctx.Identifier() != null) {
-            object.setKey(ctx.Identifier().getText());
+            key = ctx.Identifier().getText();
+            object.setKey(key);
         } else if (ctx.StringLiteral() != null) {
-            object.setKey(ctx.StringLiteral().getText());
+            key = ctx.StringLiteral().getText();
+            object.setKey(key);
         } else if (ctx.DecimalLiteral() != null) {
-            object.setKey(ctx.DecimalLiteral().getText());
+            key = ctx.DecimalLiteral().getText();
+            object.setKey(key);
         }
 
         Expr child = visitExpr(ctx.expr());
         object.setValue(child);
 
+        // تسجيل زوج المفتاح-القيمة في جدول الرموز
+        String valueType = "expression";
+        String valueInfo = "[expression_value]";
+
+        // محاولة تحديد نوع القيمة إذا كان معرف
+        if (child.getIdentifier() != null) {
+            valueType = "reference";
+            valueInfo = "ref_to_" + child.getIdentifier().getName();
+        } else if (child.getStringLiteral() != null) {
+            valueType = "string";
+            valueInfo = child.getStringLiteral();
+        }
+
+        addSymbolToTable(
+                key + "_key",
+                SymbolType.VARIABLE,
+                valueType,
+                ctx.start.getLine(),
+                ctx.start.getCharPositionInLine(),
+                valueInfo
+        );
+
         return object;
+    }
+
+    // دالة مساعدة إضافية لتسجيل المصفوفات المعرفة بشكل صريح
+    private void registerArrayVariable(String arrayName, ArrayLiteral arrayLiteral, int line, int col) {
+        int elementCount = arrayLiteral.getArray().getElements().size();
+        String arrayInfo = "array_with_" + elementCount + "_elements";
+
+        addSymbolToTable(
+                arrayName,
+                SymbolType.VARIABLE,
+                "array",
+                line,
+                col,
+                arrayInfo
+        );
+    }
+
+    // دالة مساعدة إضافية لتسجيل الأغراض المعرفة بشكل صريح
+    private void registerObjectVariable(String objectName, ObjectLiteral objectLiteral, int line, int col) {
+        int propertyCount = objectLiteral.getObject().getObjects().size();
+        String objectInfo = "object_with_" + propertyCount + "_properties";
+
+        addSymbolToTable(
+                objectName,
+                SymbolType.VARIABLE,
+                "object",
+                line,
+                col,
+                objectInfo
+        );
     }
 
     @Override
@@ -909,14 +1102,18 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         FunctionBody child3 = visitFunctionBody(ctx.functionBody());
         object.setBody(child3);
 
-        Row row = new Row();
-        row.setLine(ctx.getStart().getLine());
-        row.setCol(ctx.getStart().getCharPositionInLine());
-        row.setType("Function");
-        row.setDataType("Function");
-        row.setName(child1.getName());
-        row.setValue(ctx.functionBody().getText());
-        symbolTable.addSymbol(row);
+        // تسجيل الدالة في جدول الرموز
+        addSymbolToTable(
+                child1.getName(),
+                SymbolType.FUNCTION,
+                "function",
+                ctx.start.getLine(),
+                ctx.start.getCharPositionInLine(),
+                null
+        );
+
+        // الدخول إلى نطاق الدالة
+        enterScope("function_" + child1.getName());
 
         return object;
     }
@@ -931,16 +1128,21 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         FunctionBody child3 = visitFunctionBody(ctx.functionBody());
         object.setFunctionBody(child3);
 
+        // الدخول إلى نطاق الدالة السهمية
+        enterScope("arrow_function");
+
         return object;
     }
 
     @Override
     public FunctionBody visitFunctionBody(AngularParser.FunctionBodyContext ctx) {
-        FunctionBody object = new FunctionBody();
-
         Block child = visitBlock(ctx.block());
-        object.setBody(child);
 
+        // الخروج من نطاق الدالة بعد زيارة الجسم
+        exitScope();
+
+        FunctionBody object = new FunctionBody();
+        object.setBody(child);
         return object;
     }
 
@@ -965,10 +1167,22 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         Identifier child1 = visitIdentifier_(ctx.identifier_());
         object.setIdentifier(child1);
 
+        String dataType = "any";
         if (ctx.dataTypes() != null) {
             DataType child2 = visitDataTypes(ctx.dataTypes());
             object.setDataType(child2);
+            dataType = child2.getType();
         }
+
+        // تسجيل الباراميتر في جدول الرموز
+        addSymbolToTable(
+                child1.getName(),
+                SymbolType.PARAMETER,
+                dataType,
+                ctx.start.getLine(),
+                ctx.start.getCharPositionInLine(),
+                null
+        );
 
         return object;
     }
@@ -982,6 +1196,9 @@ public class BaseVisitor extends AngularParserBaseVisitor {
 
         Block child2 = visitBlock(ctx.block());
         object.setBlock(child2);
+
+        // الدخول إلى نطاق الكونستركتور
+        enterScope("constructor");
 
         return object;
     }
@@ -1012,6 +1229,16 @@ public class BaseVisitor extends AngularParserBaseVisitor {
 
         DataType child3 = visitDataTypes(ctx.dataTypes());
         object.setDataType(child3);
+
+        // تسجيل الباراميتر القابل للحقن في جدول الرموز
+        addSymbolToTable(
+                child2.getName(),
+                SymbolType.PARAMETER,
+                child3.getType(),
+                ctx.start.getLine(),
+                ctx.start.getCharPositionInLine(),
+                null
+        );
 
         return object;
     }
@@ -1315,26 +1542,12 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         EventName child1 = visitEventName(ctx.eventName());
         object.setEventName(child1);
 
-        Row row = new Row();
-        row.setLine(ctx.getStart().getLine());
-        row.setCol(ctx.getStart().getCharPositionInLine());
-        row.setDataType("Event");
-        row.setType("Event");
-        row.setName(child1.getEventName());
-
         if (ctx.functionCall() != null) {
             FunctionCall child2 = visitFunctionCall(ctx.functionCall());
-
-            row.setValue(ctx.functionCall().getText());
-
             object.setFunctionCall(child2);
         } else if (ctx.StringLiteral() != null) {
             object.setIdentifierPath(ctx.StringLiteral().getText());
-            row.setValue(ctx.StringLiteral().getText());
         }
-
-        symbolTable.addSymbol(row);
-
         return object;
     }
 
@@ -1366,6 +1579,16 @@ public class BaseVisitor extends AngularParserBaseVisitor {
 
         ArrayLiteral child2 = visitArrayLiteral(ctx.arrayLiteral());
         object.setArrayLiteral(child2);
+
+        // تسجيل المصفوفة في جدول الرموز
+        addSymbolToTable(
+                child1.getName(),
+                SymbolType.VARIABLE,
+                "array",
+                ctx.start.getLine(),
+                ctx.start.getCharPositionInLine(),
+                "[array]"
+        );
 
         return object;
     }

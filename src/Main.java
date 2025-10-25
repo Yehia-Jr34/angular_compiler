@@ -44,6 +44,12 @@ public class Main {
             generator.emit(ast);
             generator.writeToDisk(Paths.get(outputFile));
 
+            // ✅ طباعة Symbol Table هنا
+            System.out.println("\n" + "=".repeat(60));
+            System.out.println("📊 SYMBOL TABLE ANALYSIS");
+            System.out.println("=".repeat(60));
+            visitor.symbolTable.print();
+
             System.out.println("✅ Code generation completed. Files written to: " + outputFile);
 
         } catch (IOException e) {
