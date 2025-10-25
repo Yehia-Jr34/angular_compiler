@@ -1,8 +1,32 @@
 package ErrorHandling;
 
 public enum ErrorType {
-    DUPLICATE_VARIABLE,      // متغير مكرر
-    UNDEFINED_VARIABLE,      // متغير غير معروف
-    UNDEFINED_FUNCTION,      // دالة غير
+    // الأخطاء النحوية
+    SYNTAX_ERROR,
 
+    // أخطاء النطاق
+    DUPLICATE_VARIABLE,
+    DUPLICATE_FUNCTION,
+    UNDEFINED_VARIABLE,
+    UNDEFINED_FUNCTION,
+    UNDEFINED_COMPONENT,
+
+    // أخطاء الأنواع
+    TYPE_MISMATCH,
+    INCOMPATIBLE_TYPES,
+    INVALID_ASSIGNMENT,
+
+    // أخطاء الدوال
+    ARGUMENT_COUNT_MISMATCH,
+    INVALID_FUNCTION_CALL,
+
+    // أخطاء Angular محددة
+    INVALID_DIRECTIVE_USAGE,
+    MISSING_REQUIRED_ATTRIBUTE,
+    INVALID_BINDING_EXPRESSION,
+
+    // أخطاء الاستخدام
+    VARIABLE_NOT_INITIALIZED,
+    INVALID_RETURN_TYPE,
+    INVALID_LOOP_CONSTRUCT
 }

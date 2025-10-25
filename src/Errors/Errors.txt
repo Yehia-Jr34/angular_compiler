@@ -39,3 +39,281 @@ Syntax error at line 6:50 - mismatched input 'image' expecting Identifier
 Syntax error at line 6:71 - mismatched input ',' expecting {'}', 'actions', 'reducer', 'selectors'}
 Syntax error at line 64:2 - no viable alternative at input 'products=[{name:"Laptop",desc:"High performance",image:"https://cdn.pixabay.com/photo/2014/05/02/21/50/home-office-336377_1280.jpg"},{name:"Phone",desc:"Latest model",image:"https://cdn.pixabay.com/photo/2017/01/22/19/20/smartphone-2007617_1280.jpg"},{name:"Tablet",desc:"Lightweight and fast",image:"https://cdn.pixabay.com/photo/2015/01/21/14/14/ipad-606764_1280.jpg"}selectProduct'
 Syntax error at line 64:2 - missing ']' at 'selectProduct'
+
+
+=== Compilation Session: 2025-10-25 14:07:29 ===
+=== Total syntax errors: 0 ===
+
+
+=== Compilation Session: 2025-10-25 14:21:09 ===
+=== Total syntax errors: 0 ===
+
+
+=== Compilation Session: 2025-10-25 14:27:15 ===
+=== Total syntax errors: 0 ===
+
+
+=== Compilation Session: 2025-10-25 14:30:29 ===
+=== Total syntax errors: 0 ===
+
+
+=== Compilation Session: 2025-10-25 14:30:46 ===
+=== Total syntax errors: 0 ===
+
+
+=== Compilation Session: 2025-10-25 14:32:32 ===
+=== Total syntax errors: 0 ===
+
+
+=== Compilation Session: 2025-10-25 14:33:04 ===
+[ERROR 1] Syntax error at line 5:12 - missing '`' at '<'
+[ERROR 2] Syntax error at line 6:0 - missing '`' at '}'
+[ERROR 3] Syntax error at line 9:7 - mismatched input ':' expecting {'[', '='}
+[ERROR 4] Syntax error at line 10:7 - mismatched input ':' expecting {'[', '='}
+[ERROR 5] Syntax error at line 11:7 - mismatched input ':' expecting {'[', '='}
+[ERROR 6] Syntax error at line 13:31 - mismatched input 'SomeService' expecting {'[', ':'}
+=== Total syntax errors: 6 ===
+
+
+=== Compilation Session: 2025-10-25 14:40:30 ===
+[ERROR 1] Syntax error at line 5:12 - missing '`' at '<'
+[ERROR 2] Syntax error at line 6:0 - missing '`' at '}'
+[ERROR 3] Syntax error at line 9:7 - mismatched input ':' expecting {'[', '='}
+[ERROR 4] Syntax error at line 10:7 - mismatched input ':' expecting {'[', '='}
+[ERROR 5] Syntax error at line 11:7 - mismatched input ':' expecting {'[', '='}
+[ERROR 6] Syntax error at line 13:31 - mismatched input 'SomeService' expecting {'[', ':'}
+=== Total syntax errors: 6 ===
+
+
+=== Compilation Session: 2025-10-25 14:43:58 ===
+[ERROR 1] Syntax error at line 7:10 - token recognition error at: 'ق'
+[ERROR 2] Syntax error at line 7:11 - token recognition error at: 'ا'
+[ERROR 3] Syntax error at line 7:12 - token recognition error at: 'ئ'
+[ERROR 4] Syntax error at line 7:13 - token recognition error at: 'م'
+[ERROR 5] Syntax error at line 7:14 - token recognition error at: 'ة'
+[ERROR 6] Syntax error at line 7:16 - token recognition error at: 'ا'
+[ERROR 7] Syntax error at line 7:17 - token recognition error at: 'ل'
+[ERROR 8] Syntax error at line 7:18 - token recognition error at: 'م'
+[ERROR 9] Syntax error at line 7:19 - token recognition error at: 'ن'
+[ERROR 10] Syntax error at line 7:20 - token recognition error at: 'ت'
+[ERROR 11] Syntax error at line 7:21 - token recognition error at: 'ج'
+[ERROR 12] Syntax error at line 7:22 - token recognition error at: 'ا'
+[ERROR 13] Syntax error at line 7:23 - token recognition error at: 'ت'
+[ERROR 14] Syntax error at line 9:7 - token recognition error at: '!-'
+[ERROR 15] Syntax error at line 9:9 - no viable alternative at input '<-'
+[ERROR 16] Syntax error at line 9:11 - token recognition error at: 'خ'
+[ERROR 17] Syntax error at line 9:12 - token recognition error at: 'ط'
+[ERROR 18] Syntax error at line 9:13 - token recognition error at: 'أ'
+[ERROR 19] Syntax error at line 9:16 - token recognition error at: 'ا'
+[ERROR 20] Syntax error at line 9:17 - token recognition error at: 'س'
+[ERROR 21] Syntax error at line 9:18 - token recognition error at: 'ت'
+[ERROR 22] Syntax error at line 9:19 - token recognition error at: 'خ'
+[ERROR 23] Syntax error at line 9:20 - token recognition error at: 'د'
+[ERROR 24] Syntax error at line 9:21 - token recognition error at: 'ا'
+[ERROR 25] Syntax error at line 9:22 - token recognition error at: 'م'
+[ERROR 26] Syntax error at line 9:24 - token recognition error at: 'م'
+[ERROR 27] Syntax error at line 9:25 - token recognition error at: 'ت'
+[ERROR 28] Syntax error at line 9:26 - token recognition error at: 'غ'
+[ERROR 29] Syntax error at line 9:27 - token recognition error at: 'ي'
+[ERROR 30] Syntax error at line 9:28 - token recognition error at: 'ر'
+[ERROR 31] Syntax error at line 9:30 - token recognition error at: 'غ'
+[ERROR 32] Syntax error at line 9:31 - token recognition error at: 'ي'
+[ERROR 33] Syntax error at line 9:32 - token recognition error at: 'ر'
+[ERROR 34] Syntax error at line 9:34 - token recognition error at: 'م'
+[ERROR 35] Syntax error at line 9:35 - token recognition error at: 'ع'
+[ERROR 36] Syntax error at line 9:36 - token recognition error at: 'ر'
+[ERROR 37] Syntax error at line 9:37 - token recognition error at: 'ّ'
+[ERROR 38] Syntax error at line 9:38 - token recognition error at: 'ف'
+[ERROR 39] Syntax error at line 14:7 - token recognition error at: '!-'
+[ERROR 40] Syntax error at line 14:9 - no viable alternative at input '<-'
+[ERROR 41] Syntax error at line 14:11 - token recognition error at: 'خ'
+[ERROR 42] Syntax error at line 14:12 - token recognition error at: 'ط'
+[ERROR 43] Syntax error at line 14:13 - token recognition error at: 'أ'
+[ERROR 44] Syntax error at line 14:16 - token recognition error at: 'ا'
+[ERROR 45] Syntax error at line 14:17 - token recognition error at: 'س'
+[ERROR 46] Syntax error at line 14:18 - token recognition error at: 'ت'
+[ERROR 47] Syntax error at line 14:19 - token recognition error at: 'خ'
+[ERROR 48] Syntax error at line 14:20 - token recognition error at: 'د'
+[ERROR 49] Syntax error at line 14:21 - token recognition error at: 'ا'
+[ERROR 50] Syntax error at line 14:22 - token recognition error at: 'م'
+[ERROR 51] Syntax error at line 14:24 - token recognition error at: 'خ'
+[ERROR 52] Syntax error at line 14:25 - token recognition error at: 'ا'
+[ERROR 53] Syntax error at line 14:26 - token recognition error at: 'ص'
+[ERROR 54] Syntax error at line 14:27 - token recognition error at: 'ي'
+[ERROR 55] Syntax error at line 14:28 - token recognition error at: 'ة'
+[ERROR 56] Syntax error at line 14:30 - token recognition error at: 'غ'
+[ERROR 57] Syntax error at line 14:31 - token recognition error at: 'ي'
+[ERROR 58] Syntax error at line 14:32 - token recognition error at: 'ر'
+[ERROR 59] Syntax error at line 14:34 - token recognition error at: 'م'
+[ERROR 60] Syntax error at line 14:35 - token recognition error at: 'و'
+[ERROR 61] Syntax error at line 14:36 - token recognition error at: 'ج'
+[ERROR 62] Syntax error at line 14:37 - token recognition error at: 'و'
+[ERROR 63] Syntax error at line 14:38 - token recognition error at: 'د'
+[ERROR 64] Syntax error at line 14:39 - token recognition error at: 'ة'
+[ERROR 65] Syntax error at line 15:40 - token recognition error at: 'إ'
+[ERROR 66] Syntax error at line 15:41 - token recognition error at: 'ض'
+[ERROR 67] Syntax error at line 15:42 - token recognition error at: 'ا'
+[ERROR 68] Syntax error at line 15:43 - token recognition error at: 'ف'
+[ERROR 69] Syntax error at line 15:44 - token recognition error at: 'ة'
+[ERROR 70] Syntax error at line 15:46 - token recognition error at: 'م'
+[ERROR 71] Syntax error at line 15:47 - token recognition error at: 'ن'
+[ERROR 72] Syntax error at line 15:48 - token recognition error at: 'ت'
+[ERROR 73] Syntax error at line 15:49 - token recognition error at: 'ج'
+[ERROR 74] Syntax error at line 17:7 - token recognition error at: '!-'
+[ERROR 75] Syntax error at line 17:9 - no viable alternative at input '<-'
+[ERROR 76] Syntax error at line 17:11 - token recognition error at: 'خ'
+[ERROR 77] Syntax error at line 17:12 - token recognition error at: 'ط'
+[ERROR 78] Syntax error at line 17:13 - token recognition error at: 'أ'
+[ERROR 79] Syntax error at line 17:16 - token recognition error at: 'ا'
+[ERROR 80] Syntax error at line 17:17 - token recognition error at: 'س'
+[ERROR 81] Syntax error at line 17:18 - token recognition error at: 'ت'
+[ERROR 82] Syntax error at line 17:19 - token recognition error at: 'د'
+[ERROR 83] Syntax error at line 17:20 - token recognition error at: 'ع'
+[ERROR 84] Syntax error at line 17:21 - token recognition error at: 'ا'
+[ERROR 85] Syntax error at line 17:22 - token recognition error at: 'ء'
+[ERROR 86] Syntax error at line 17:24 - token recognition error at: 'د'
+[ERROR 87] Syntax error at line 17:25 - token recognition error at: 'ا'
+[ERROR 88] Syntax error at line 17:26 - token recognition error at: 'ل'
+[ERROR 89] Syntax error at line 17:27 - token recognition error at: 'ة'
+[ERROR 90] Syntax error at line 17:29 - token recognition error at: 'غ'
+[ERROR 91] Syntax error at line 17:30 - token recognition error at: 'ي'
+[ERROR 92] Syntax error at line 17:31 - token recognition error at: 'ر'
+[ERROR 93] Syntax error at line 17:33 - token recognition error at: 'م'
+[ERROR 94] Syntax error at line 17:34 - token recognition error at: 'ع'
+[ERROR 95] Syntax error at line 17:35 - token recognition error at: 'ر'
+[ERROR 96] Syntax error at line 17:36 - token recognition error at: 'ّ'
+[ERROR 97] Syntax error at line 17:37 - token recognition error at: 'ف'
+[ERROR 98] Syntax error at line 17:38 - token recognition error at: 'ة'
+[ERROR 99] Syntax error at line 18:28 - mismatched input '(' expecting {'[', '}', '.'}
+[ERROR 100] Syntax error at line 18:31 - extraneous input '}' expecting {'(', ')', '[', ']', '{', LessThan, MoreThan, Divide, ',', ';', ':', '.', '=', '=>', '"', ''', '`', 'import', 'from', 'export', 'class', 'constructor', 'return', 'if', 'else', 'for', 'while', 'do', 'break', 'continue', 'public', 'private', 'protected', 'var', 'let', 'const', 'number', 'string', 'boolean', 'any', 'console', 'log', '*ngFor', '*ngIf', 'store', 'state', 'actions', 'reducer', 'selectors', 'select', 'selector', 'template', 'of', 'dispatch', 'on', 'styles', '@Component', CssColor, CssUnit, '*=', '/=', '%=', '+=', '-=', '===', '!==', '==', '!=', '<=', '>=', '&', '^', '|', '*', '+', '-', '%', '&&', '||', '++', '--', 'null', HexLiteral, HexColorLiteral, BooleanLiteral, StringLiteral, DecimalLiteral, Identifier, WS, LineComment, BlockComment}
+[ERROR 101] Syntax error at line 20:7 - token recognition error at: '!-'
+[ERROR 102] Syntax error at line 20:9 - no viable alternative at input '<-'
+[ERROR 103] Syntax error at line 20:11 - token recognition error at: 'خ'
+[ERROR 104] Syntax error at line 20:12 - token recognition error at: 'ط'
+[ERROR 105] Syntax error at line 20:13 - token recognition error at: 'أ'
+[ERROR 106] Syntax error at line 20:16 - token recognition error at: 'ا'
+[ERROR 107] Syntax error at line 20:17 - token recognition error at: 'س'
+[ERROR 108] Syntax error at line 20:18 - token recognition error at: 'ت'
+[ERROR 109] Syntax error at line 20:19 - token recognition error at: 'خ'
+[ERROR 110] Syntax error at line 20:20 - token recognition error at: 'د'
+[ERROR 111] Syntax error at line 20:21 - token recognition error at: 'ا'
+[ERROR 112] Syntax error at line 20:22 - token recognition error at: 'م'
+[ERROR 113] Syntax error at line 20:24 - token recognition error at: 'ك'
+[ERROR 114] Syntax error at line 20:25 - token recognition error at: 'ا'
+[ERROR 115] Syntax error at line 20:26 - token recognition error at: 'ئ'
+[ERROR 116] Syntax error at line 20:27 - token recognition error at: 'ن'
+[ERROR 117] Syntax error at line 20:29 - token recognition error at: 'غ'
+[ERROR 118] Syntax error at line 20:30 - token recognition error at: 'ي'
+[ERROR 119] Syntax error at line 20:31 - token recognition error at: 'ر'
+[ERROR 120] Syntax error at line 20:33 - token recognition error at: 'م'
+[ERROR 121] Syntax error at line 20:34 - token recognition error at: 'ع'
+[ERROR 122] Syntax error at line 20:35 - token recognition error at: 'ر'
+[ERROR 123] Syntax error at line 20:36 - token recognition error at: 'ّ'
+[ERROR 124] Syntax error at line 20:37 - token recognition error at: 'ف'
+[ERROR 125] Syntax error at line 21:9 - token recognition error at: 'ا'
+[ERROR 126] Syntax error at line 21:10 - token recognition error at: 'ل'
+[ERROR 127] Syntax error at line 21:11 - token recognition error at: 'إ'
+[ERROR 128] Syntax error at line 21:12 - token recognition error at: 'ع'
+[ERROR 129] Syntax error at line 21:13 - token recognition error at: 'د'
+[ERROR 130] Syntax error at line 21:14 - token recognition error at: 'ا'
+[ERROR 131] Syntax error at line 21:15 - token recognition error at: 'د'
+[ERROR 132] Syntax error at line 21:16 - token recognition error at: 'ا'
+[ERROR 133] Syntax error at line 21:17 - token recognition error at: 'ت'
+[ERROR 134] Syntax error at line 22:5 - no viable alternative at input '</'
+[ERROR 135] Syntax error at line 26:6 - missing '{' at 'border'
+[ERROR 136] Syntax error at line 26:12 - mismatched input ':' expecting {'[', '}', '.'}
+[ERROR 137] Syntax error at line 28:4 - missing '`' at '}'
+[ERROR 138] Syntax error at line 29:4 - mismatched input 'button' expecting {'(', ')', '[', ']', '{', LessThan, MoreThan, Divide, ',', ';', ':', '.', '=', '=>', '"', ''', '`', 'import', 'from', 'export', 'class', 'constructor', 'return', 'if', 'else', 'for', 'while', 'do', 'break', 'continue', 'public', 'private', 'protected', 'var', 'let', 'const', 'number', 'string', 'boolean', 'any', 'console', 'log', '*ngFor', '*ngIf', 'store', 'state', 'actions', 'reducer', 'selectors', 'select', 'selector', 'template', 'of', 'dispatch', 'on', 'styles', '@Component', CssColor, CssUnit, '*=', '/=', '%=', '+=', '-=', '===', '!==', '==', '!=', '<=', '>=', '&', '^', '|', '*', '+', '-', '%', '&&', '||', '++', '--', 'null', HexLiteral, HexColorLiteral, BooleanLiteral, StringLiteral, DecimalLiteral, Identifier, WS, LineComment, BlockComment}
+=== Total syntax errors: 138 ===
+
+
+=== Compilation Session: 2025-10-25 14:44:58 ===
+[ERROR 1] Syntax error at line 7:10 - token recognition error at: 'ق'
+[ERROR 2] Syntax error at line 7:11 - token recognition error at: 'ا'
+[ERROR 3] Syntax error at line 7:12 - token recognition error at: 'ئ'
+[ERROR 4] Syntax error at line 7:13 - token recognition error at: 'م'
+[ERROR 5] Syntax error at line 7:14 - token recognition error at: 'ة'
+[ERROR 6] Syntax error at line 7:16 - token recognition error at: 'ا'
+[ERROR 7] Syntax error at line 7:17 - token recognition error at: 'ل'
+[ERROR 8] Syntax error at line 7:18 - token recognition error at: 'م'
+[ERROR 9] Syntax error at line 7:19 - token recognition error at: 'ن'
+[ERROR 10] Syntax error at line 7:20 - token recognition error at: 'ت'
+[ERROR 11] Syntax error at line 7:21 - token recognition error at: 'ج'
+[ERROR 12] Syntax error at line 7:22 - token recognition error at: 'ا'
+[ERROR 13] Syntax error at line 7:23 - token recognition error at: 'ت'
+[ERROR 14] Syntax error at line 13:40 - token recognition error at: 'إ'
+[ERROR 15] Syntax error at line 13:41 - token recognition error at: 'ض'
+[ERROR 16] Syntax error at line 13:42 - token recognition error at: 'ا'
+[ERROR 17] Syntax error at line 13:43 - token recognition error at: 'ف'
+[ERROR 18] Syntax error at line 13:44 - token recognition error at: 'ة'
+[ERROR 19] Syntax error at line 13:46 - token recognition error at: 'م'
+[ERROR 20] Syntax error at line 13:47 - token recognition error at: 'ن'
+[ERROR 21] Syntax error at line 13:48 - token recognition error at: 'ت'
+[ERROR 22] Syntax error at line 13:49 - token recognition error at: 'ج'
+[ERROR 23] Syntax error at line 15:28 - mismatched input '(' expecting {'[', '}', '.'}
+[ERROR 24] Syntax error at line 15:31 - extraneous input '}' expecting {'(', ')', '[', ']', '{', LessThan, MoreThan, Divide, ',', ';', ':', '.', '=', '=>', '"', ''', '`', 'import', 'from', 'export', 'class', 'constructor', 'return', 'if', 'else', 'for', 'while', 'do', 'break', 'continue', 'public', 'private', 'protected', 'var', 'let', 'const', 'number', 'string', 'boolean', 'any', 'console', 'log', '*ngFor', '*ngIf', 'store', 'state', 'actions', 'reducer', 'selectors', 'select', 'selector', 'template', 'of', 'dispatch', 'on', 'styles', '@Component', CssColor, CssUnit, '*=', '/=', '%=', '+=', '-=', '===', '!==', '==', '!=', '<=', '>=', '&', '^', '|', '*', '+', '-', '%', '&&', '||', '++', '--', 'null', HexLiteral, HexColorLiteral, BooleanLiteral, StringLiteral, DecimalLiteral, Identifier, WS, LineComment, BlockComment}
+[ERROR 25] Syntax error at line 17:9 - token recognition error at: 'ا'
+[ERROR 26] Syntax error at line 17:10 - token recognition error at: 'ل'
+[ERROR 27] Syntax error at line 17:11 - token recognition error at: 'إ'
+[ERROR 28] Syntax error at line 17:12 - token recognition error at: 'ع'
+[ERROR 29] Syntax error at line 17:13 - token recognition error at: 'د'
+[ERROR 30] Syntax error at line 17:14 - token recognition error at: 'ا'
+[ERROR 31] Syntax error at line 17:15 - token recognition error at: 'د'
+[ERROR 32] Syntax error at line 17:16 - token recognition error at: 'ا'
+[ERROR 33] Syntax error at line 17:17 - token recognition error at: 'ت'
+[ERROR 34] Syntax error at line 22:6 - missing '{' at 'border'
+[ERROR 35] Syntax error at line 22:12 - mismatched input ':' expecting {'[', '}', '.'}
+[ERROR 36] Syntax error at line 24:4 - missing '`' at '}'
+[ERROR 37] Syntax error at line 25:4 - mismatched input 'button' expecting {'(', ')', '[', ']', '{', LessThan, MoreThan, Divide, ',', ';', ':', '.', '=', '=>', '"', ''', '`', 'import', 'from', 'export', 'class', 'constructor', 'return', 'if', 'else', 'for', 'while', 'do', 'break', 'continue', 'public', 'private', 'protected', 'var', 'let', 'const', 'number', 'string', 'boolean', 'any', 'console', 'log', '*ngFor', '*ngIf', 'store', 'state', 'actions', 'reducer', 'selectors', 'select', 'selector', 'template', 'of', 'dispatch', 'on', 'styles', '@Component', CssColor, CssUnit, '*=', '/=', '%=', '+=', '-=', '===', '!==', '==', '!=', '<=', '>=', '&', '^', '|', '*', '+', '-', '%', '&&', '||', '++', '--', 'null', HexLiteral, HexColorLiteral, BooleanLiteral, StringLiteral, DecimalLiteral, Identifier, WS, LineComment, BlockComment}
+=== Total syntax errors: 37 ===
+
+
+=== Compilation Session: 2025-10-25 14:45:57 ===
+[ERROR 1] Syntax error at line 15:28 - mismatched input '(' expecting {'[', '}', '.'}
+[ERROR 2] Syntax error at line 15:31 - extraneous input '}' expecting {'(', ')', '[', ']', '{', LessThan, MoreThan, Divide, ',', ';', ':', '.', '=', '=>', '"', ''', '`', 'import', 'from', 'export', 'class', 'constructor', 'return', 'if', 'else', 'for', 'while', 'do', 'break', 'continue', 'public', 'private', 'protected', 'var', 'let', 'const', 'number', 'string', 'boolean', 'any', 'console', 'log', '*ngFor', '*ngIf', 'store', 'state', 'actions', 'reducer', 'selectors', 'select', 'selector', 'template', 'of', 'dispatch', 'on', 'styles', '@Component', CssColor, CssUnit, '*=', '/=', '%=', '+=', '-=', '===', '!==', '==', '!=', '<=', '>=', '&', '^', '|', '*', '+', '-', '%', '&&', '||', '++', '--', 'null', HexLiteral, HexColorLiteral, BooleanLiteral, StringLiteral, DecimalLiteral, Identifier, WS, LineComment, BlockComment}
+[ERROR 3] Syntax error at line 17:9 - token recognition error at: 'ا'
+[ERROR 4] Syntax error at line 17:10 - token recognition error at: 'ل'
+[ERROR 5] Syntax error at line 17:11 - token recognition error at: 'إ'
+[ERROR 6] Syntax error at line 17:12 - token recognition error at: 'ع'
+[ERROR 7] Syntax error at line 17:13 - token recognition error at: 'د'
+[ERROR 8] Syntax error at line 17:14 - token recognition error at: 'ا'
+[ERROR 9] Syntax error at line 17:15 - token recognition error at: 'د'
+[ERROR 10] Syntax error at line 17:16 - token recognition error at: 'ا'
+[ERROR 11] Syntax error at line 17:17 - token recognition error at: 'ت'
+[ERROR 12] Syntax error at line 22:6 - missing '{' at 'border'
+[ERROR 13] Syntax error at line 22:12 - mismatched input ':' expecting {'[', '}', '.'}
+[ERROR 14] Syntax error at line 24:4 - missing '`' at '}'
+[ERROR 15] Syntax error at line 25:4 - mismatched input 'button' expecting {'(', ')', '[', ']', '{', LessThan, MoreThan, Divide, ',', ';', ':', '.', '=', '=>', '"', ''', '`', 'import', 'from', 'export', 'class', 'constructor', 'return', 'if', 'else', 'for', 'while', 'do', 'break', 'continue', 'public', 'private', 'protected', 'var', 'let', 'const', 'number', 'string', 'boolean', 'any', 'console', 'log', '*ngFor', '*ngIf', 'store', 'state', 'actions', 'reducer', 'selectors', 'select', 'selector', 'template', 'of', 'dispatch', 'on', 'styles', '@Component', CssColor, CssUnit, '*=', '/=', '%=', '+=', '-=', '===', '!==', '==', '!=', '<=', '>=', '&', '^', '|', '*', '+', '-', '%', '&&', '||', '++', '--', 'null', HexLiteral, HexColorLiteral, BooleanLiteral, StringLiteral, DecimalLiteral, Identifier, WS, LineComment, BlockComment}
+=== Total syntax errors: 15 ===
+
+
+=== Compilation Session: 2025-10-25 14:46:16 ===
+[ERROR 1] Syntax error at line 15:28 - mismatched input '(' expecting {'[', '}', '.'}
+[ERROR 2] Syntax error at line 15:31 - extraneous input '}' expecting {'(', ')', '[', ']', '{', LessThan, MoreThan, Divide, ',', ';', ':', '.', '=', '=>', '"', ''', '`', 'import', 'from', 'export', 'class', 'constructor', 'return', 'if', 'else', 'for', 'while', 'do', 'break', 'continue', 'public', 'private', 'protected', 'var', 'let', 'const', 'number', 'string', 'boolean', 'any', 'console', 'log', '*ngFor', '*ngIf', 'store', 'state', 'actions', 'reducer', 'selectors', 'select', 'selector', 'template', 'of', 'dispatch', 'on', 'styles', '@Component', CssColor, CssUnit, '*=', '/=', '%=', '+=', '-=', '===', '!==', '==', '!=', '<=', '>=', '&', '^', '|', '*', '+', '-', '%', '&&', '||', '++', '--', 'null', HexLiteral, HexColorLiteral, BooleanLiteral, StringLiteral, DecimalLiteral, Identifier, WS, LineComment, BlockComment}
+[ERROR 3] Syntax error at line 22:6 - missing '{' at 'border'
+[ERROR 4] Syntax error at line 22:12 - mismatched input ':' expecting {'[', '}', '.'}
+[ERROR 5] Syntax error at line 24:4 - missing '`' at '}'
+[ERROR 6] Syntax error at line 25:4 - mismatched input 'button' expecting {'(', ')', '[', ']', '{', LessThan, MoreThan, Divide, ',', ';', ':', '.', '=', '=>', '"', ''', '`', 'import', 'from', 'export', 'class', 'constructor', 'return', 'if', 'else', 'for', 'while', 'do', 'break', 'continue', 'public', 'private', 'protected', 'var', 'let', 'const', 'number', 'string', 'boolean', 'any', 'console', 'log', '*ngFor', '*ngIf', 'store', 'state', 'actions', 'reducer', 'selectors', 'select', 'selector', 'template', 'of', 'dispatch', 'on', 'styles', '@Component', CssColor, CssUnit, '*=', '/=', '%=', '+=', '-=', '===', '!==', '==', '!=', '<=', '>=', '&', '^', '|', '*', '+', '-', '%', '&&', '||', '++', '--', 'null', HexLiteral, HexColorLiteral, BooleanLiteral, StringLiteral, DecimalLiteral, Identifier, WS, LineComment, BlockComment}
+=== Total syntax errors: 6 ===
+
+
+=== Compilation Session: 2025-10-25 14:46:51 ===
+[ERROR 1] Syntax error at line 15:28 - mismatched input '(' expecting {'[', '}', '.'}
+[ERROR 2] Syntax error at line 15:31 - extraneous input '}' expecting {'(', ')', '[', ']', '{', LessThan, MoreThan, Divide, ',', ';', ':', '.', '=', '=>', '"', ''', '`', 'import', 'from', 'export', 'class', 'constructor', 'return', 'if', 'else', 'for', 'while', 'do', 'break', 'continue', 'public', 'private', 'protected', 'var', 'let', 'const', 'number', 'string', 'boolean', 'any', 'console', 'log', '*ngFor', '*ngIf', 'store', 'state', 'actions', 'reducer', 'selectors', 'select', 'selector', 'template', 'of', 'dispatch', 'on', 'styles', '@Component', CssColor, CssUnit, '*=', '/=', '%=', '+=', '-=', '===', '!==', '==', '!=', '<=', '>=', '&', '^', '|', '*', '+', '-', '%', '&&', '||', '++', '--', 'null', HexLiteral, HexColorLiteral, BooleanLiteral, StringLiteral, DecimalLiteral, Identifier, WS, LineComment, BlockComment}
+[ERROR 3] Syntax error at line 22:6 - missing '{' at 'border'
+[ERROR 4] Syntax error at line 22:12 - mismatched input ':' expecting {'[', '}', '.'}
+[ERROR 5] Syntax error at line 24:4 - missing '`' at '}'
+[ERROR 6] Syntax error at line 25:4 - mismatched input 'button' expecting {'(', ')', '[', ']', '{', LessThan, MoreThan, Divide, ',', ';', ':', '.', '=', '=>', '"', ''', '`', 'import', 'from', 'export', 'class', 'constructor', 'return', 'if', 'else', 'for', 'while', 'do', 'break', 'continue', 'public', 'private', 'protected', 'var', 'let', 'const', 'number', 'string', 'boolean', 'any', 'console', 'log', '*ngFor', '*ngIf', 'store', 'state', 'actions', 'reducer', 'selectors', 'select', 'selector', 'template', 'of', 'dispatch', 'on', 'styles', '@Component', CssColor, CssUnit, '*=', '/=', '%=', '+=', '-=', '===', '!==', '==', '!=', '<=', '>=', '&', '^', '|', '*', '+', '-', '%', '&&', '||', '++', '--', 'null', HexLiteral, HexColorLiteral, BooleanLiteral, StringLiteral, DecimalLiteral, Identifier, WS, LineComment, BlockComment}
+=== Total syntax errors: 6 ===
+
+
+=== Compilation Session: 2025-10-25 14:47:08 ===
+[ERROR 1] Syntax error at line 20:6 - missing '{' at 'border'
+[ERROR 2] Syntax error at line 20:12 - mismatched input ':' expecting {'[', '}', '.'}
+[ERROR 3] Syntax error at line 22:4 - missing '`' at '}'
+[ERROR 4] Syntax error at line 23:4 - mismatched input 'button' expecting {'(', ')', '[', ']', '{', LessThan, MoreThan, Divide, ',', ';', ':', '.', '=', '=>', '"', ''', '`', 'import', 'from', 'export', 'class', 'constructor', 'return', 'if', 'else', 'for', 'while', 'do', 'break', 'continue', 'public', 'private', 'protected', 'var', 'let', 'const', 'number', 'string', 'boolean', 'any', 'console', 'log', '*ngFor', '*ngIf', 'store', 'state', 'actions', 'reducer', 'selectors', 'select', 'selector', 'template', 'of', 'dispatch', 'on', 'styles', '@Component', CssColor, CssUnit, '*=', '/=', '%=', '+=', '-=', '===', '!==', '==', '!=', '<=', '>=', '&', '^', '|', '*', '+', '-', '%', '&&', '||', '++', '--', 'null', HexLiteral, HexColorLiteral, BooleanLiteral, StringLiteral, DecimalLiteral, Identifier, WS, LineComment, BlockComment}
+=== Total syntax errors: 4 ===
+
+
+=== Compilation Session: 2025-10-25 14:47:50 ===
+=== Total syntax errors: 0 ===

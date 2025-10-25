@@ -50,6 +50,9 @@ import AST.Statement.Loops.*;
 import AST.Statement.Statement;
 import AST.StoreDec.*;
 import AST.Styles.*;
+import ErrorHandling.ErrorReporter;
+import ErrorHandling.ErrorType;
+import ErrorHandling.SemanticAnalyzer;
 import LexerAndParser.AngularParser;
 import LexerAndParser.AngularParserBaseVisitor;
 import SymbolTable.BaseSymbolTable;
@@ -61,13 +64,25 @@ public class BaseVisitor extends AngularParserBaseVisitor {
     private String currentScope = "global";
     private int scopeCounter = 0;
 
+    // إضافة نظام التحقق من الأخطاء
+    private ErrorReporter errorReporter = new ErrorReporter();
+    private SemanticAnalyzer semanticAnalyzer;
+
+    public BaseVisitor() {
+        this.semanticAnalyzer = new SemanticAnalyzer(symbolTable, errorReporter);
+    }
+
     // دوال مساعدة لإدارة النطاق
     private void enterScope(String scopeName) {
         currentScope = scopeName + "_" + (scopeCounter++);
+        // تحديث النطاق الحالي في المحلل الدلالي
+        semanticAnalyzer.setCurrentScope(currentScope);
     }
 
     private void exitScope() {
         currentScope = "global";
+        // تحديث النطاق الحالي في المحلل الدلالي
+        semanticAnalyzer.setCurrentScope(currentScope);
     }
 
     private String getCurrentScope() {
@@ -77,6 +92,9 @@ public class BaseVisitor extends AngularParserBaseVisitor {
     // دالة مساعدة لإضافة رمز إلى جدول الرموز
     private void addSymbolToTable(String name, SymbolType symbolType, String dataType,
                                   int line, int col, String value) {
+        // التحقق من التعريف المزدوج قبل الإضافة
+        semanticAnalyzer.checkDuplicateDeclaration(name, symbolType, line, col);
+
         Row row = new Row(name, symbolType, dataType, line, col, getCurrentScope());
         if (value != null) {
             row.setValue(value);
@@ -120,6 +138,19 @@ public class BaseVisitor extends AngularParserBaseVisitor {
     // دالة للحصول على جدول الرموز
     public BaseSymbolTable getSymbolTable() {
         return symbolTable;
+    }
+
+    // دوال جديدة للحصول على معلومات الأخطاء
+    public boolean hasErrors() {
+        return errorReporter.hasErrors();
+    }
+
+    public void printErrorReport() {
+        errorReporter.printReport();
+    }
+
+    public ErrorReporter getErrorReporter() {
+        return errorReporter;
     }
 
     @Override
@@ -753,6 +784,9 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         } else if (ctx.identifier_() != null) {
             Identifier child10 = visitIdentifier_(ctx.identifier_());
             object.setIdentifier(child10);
+
+            // التحقق من وجود المتغير عند استخدامه
+            semanticAnalyzer.checkVariableExists(child10);
         }
 
         return object;
@@ -777,6 +811,9 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         if (ctx.identifier_() != null) {
             Identifier child = visitIdentifier_(ctx.identifier_());
             object.setIdentifier(child);
+
+            // التحقق من وجود المتغير عند استخدامه في تعبير حسابي
+            semanticAnalyzer.checkVariableExists(child);
         } else if (ctx.StringLiteral() != null) {
             object.setStringLiteral(ctx.StringLiteral().getText());
         } else if (ctx.DecimalLiteral() != null) {
@@ -814,6 +851,9 @@ public class BaseVisitor extends AngularParserBaseVisitor {
             ArrayIndex child = visitArrayIndex(ctx.arrayIndex());
             object.setArrayIndex(child);
         }
+
+        // التحقق من وجود المتغير عند استخدامه كمُعرِّف
+        semanticAnalyzer.checkVariableExists(object);
 
         return object;
     }
@@ -949,6 +989,9 @@ public class BaseVisitor extends AngularParserBaseVisitor {
                     ctx.start.getCharPositionInLine(),
                     "used_in_array"
             );
+
+            // التحقق من وجود المتغير المستخدم في المصفوفة
+            semanticAnalyzer.checkVariableExists(child);
         }
 
         return object;
@@ -1027,6 +1070,9 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         if (child.getIdentifier() != null) {
             valueType = "reference";
             valueInfo = "ref_to_" + child.getIdentifier().getName();
+
+            // التحقق من وجود المتغير المستخدم كقيمة في الغرض
+            semanticAnalyzer.checkVariableExists(child.getIdentifier());
         } else if (child.getStringLiteral() != null) {
             valueType = "string";
             valueInfo = child.getStringLiteral();
@@ -1292,9 +1338,18 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         if (ctx.identifier_() != null) {
             Identifier child = visitIdentifier_(ctx.identifier_());
             object.setIdentifier(child);
+
+            // التحقق من وجود المتغير في التعابير
+            semanticAnalyzer.checkVariableExists(child);
         } else if (ctx.identifierPath() != null) {
             IdentifierPath child = visitIdentifierPath(ctx.identifierPath());
             object.setIdentifierPath(child);
+
+            // التحقق من وجود المسار في التعابير
+            if (!child.getIdentifiers().isEmpty()) {
+                Identifier firstIdentifier = child.getIdentifiers().get(0);
+                semanticAnalyzer.checkVariableExists(firstIdentifier);
+            }
         }
 
         return object;
@@ -1307,6 +1362,9 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         for (int i = 0; i < ctx.identifier_().size(); i++) {
             Identifier child = visitIdentifier_(ctx.identifier_(i));
             object.addIdentifier(child);
+
+            // التحقق من وجود كل معرف في المسار
+            semanticAnalyzer.checkVariableExists(child);
         }
 
         return object;
@@ -1447,6 +1505,10 @@ public class BaseVisitor extends AngularParserBaseVisitor {
 
             Identifier child2 = visitIdentifier_(ctx.identifier_(1));
             object.setIdentifier2(child2);
+
+            // التحقق من وجود المتغيرات في الـ for directive
+            semanticAnalyzer.checkVariableExists(child1);
+            semanticAnalyzer.checkVariableExists(child2);
         } else {
             object.setExpression(ctx.StringLiteral().getText());
         }
@@ -1462,6 +1524,9 @@ public class BaseVisitor extends AngularParserBaseVisitor {
             if (ctx.identifier_() != null) {
                 Identifier child1 = visitIdentifier_(ctx.identifier_());
                 object.setCondition(child1);
+
+                // التحقق من وجود المتغير في الـ if directive
+                semanticAnalyzer.checkVariableExists(child1);
             } else if (ctx.anyLiteral() != null) {
                 AnyLiteral child2 = visitAnyLiteral(ctx.anyLiteral());
                 object.setThen(child2);
@@ -1504,6 +1569,12 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         } else if (ctx.identifierPath() != null) {
             IdentifierPath child = visitIdentifierPath(ctx.identifierPath());
             object.setPath(child);
+
+            // التحقق من وجود المسار في قيمة السمة
+            if (!child.getIdentifiers().isEmpty()) {
+                Identifier firstIdentifier = child.getIdentifiers().get(0);
+                semanticAnalyzer.checkVariableExists(firstIdentifier);
+            }
         }
 
         return object;
@@ -1519,6 +1590,12 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         if (ctx.identifierPath() != null) {
             IdentifierPath child2 = visitIdentifierPath(ctx.identifierPath());
             object.setBound(child2);
+
+            // التحقق من وجود المسار في الـ bound attribute
+            if (!child2.getIdentifiers().isEmpty()) {
+                Identifier firstIdentifier = child2.getIdentifiers().get(0);
+                semanticAnalyzer.checkVariableExists(firstIdentifier);
+            }
         } else {
             object.setValue(ctx.StringLiteral().getText());
         }
@@ -1545,6 +1622,13 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         if (ctx.functionCall() != null) {
             FunctionCall child2 = visitFunctionCall(ctx.functionCall());
             object.setFunctionCall(child2);
+
+            // التحقق من وجود الدالة في event binding
+            if (child2.getIdentifierPath() != null && !child2.getIdentifierPath().getIdentifiers().isEmpty()) {
+                String functionName = child2.getIdentifierPath().getIdentifiers().get(0).getName();
+                semanticAnalyzer.checkFunctionExists(functionName,
+                        ctx.start.getLine(), ctx.start.getCharPositionInLine());
+            }
         } else if (ctx.StringLiteral() != null) {
             object.setIdentifierPath(ctx.StringLiteral().getText());
         }
@@ -1558,6 +1642,13 @@ public class BaseVisitor extends AngularParserBaseVisitor {
         if (ctx.identifierPath() != null) {
             IdentifierPath child1 = visitIdentifierPath(ctx.identifierPath());
             object.setIdentifierPath(child1);
+
+            // التحقق من وجود الدالة عند استدعائها
+            if (!child1.getIdentifiers().isEmpty()) {
+                String functionName = child1.getIdentifiers().get(0).getName();
+                semanticAnalyzer.checkFunctionExists(functionName,
+                        ctx.start.getLine(), ctx.start.getCharPositionInLine());
+            }
         }
 
         if (!ctx.expr().isEmpty()) {
@@ -1660,6 +1751,12 @@ public class BaseVisitor extends AngularParserBaseVisitor {
             for (int i = 0; i < ctx.identifierPath().size(); i++) {
                 IdentifierPath child = visitIdentifierPath(ctx.identifierPath(i));
                 object.addPath(child);
+
+                // التحقق من وجود المسار في قيم CSS
+                if (!child.getIdentifiers().isEmpty()) {
+                    Identifier firstIdentifier = child.getIdentifiers().get(0);
+                    semanticAnalyzer.checkVariableExists(firstIdentifier);
+                }
             }
         }
 

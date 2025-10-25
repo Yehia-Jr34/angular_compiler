@@ -1,49 +1,39 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-example',
-  template: <p>Example Component</p>
+  selector: 'app-products',
+  template: `
+    <div>
+      <h2>products</h2>
+
+      <div *ngFor="let product of productList">
+        {{ product.name }} - {{ product.price }}
+      </div>
+
+      <button (click)="addNewProduct()">add</button>
+
+      <p>sitting: {{ settings.theme }}</p>
+    </div>
+  `,
+  styles:`
+    div {
+      border: 1px solid black;
+      padding: 10px;
+    }
+    button {
+      background: blue;
+      color: white;
+    }
+  `
 })
-export class ExampleComponent {
-  constructor(
-    public http: any
-  ) {}
+export class ProductsComponent {
+  products = [
+    { name: 'prod 1', price: 100 },
+    { name: 'prod 2', price: 200 }
+  ];
 
-  processNumbers(numbers: number[]){
-    let results = 1;
-
-    // For loop
-    for (let i = 0; i < numbers.length; i++) {
-      const square = numbers[i] * numbers[i];
-      if (square % 2 === 0) {
-        console.log(sqaure);
-      }
-    }
-
-    // While loop
-    let index = 0;
-    while (index < results.length) {
-      if (results[index] > 50) {
-        results[index] = 50; // Cap values at 50
-      }
-      index++;
-    }
-
-    // Do-while loop
-    let total = 0;
-    let i = 0;
-    do {
-      total += results[i] || 0;
-      i++;
-    } while (i < results.length){}
-
-    console.log('Processed numbers:' + results + 'Total:' + total);
-
-    let filterEvenNumbers = (numbers: number[], index: number) => {
-
-        console.log(index%2==0);
-      };
-
-    return results;
+  addProduct() {
+    this.products.push({ name: 'new', price: 150 });
   }
+
 }

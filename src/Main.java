@@ -1,8 +1,8 @@
 import CodeGeneration.CodeGenerator;
-import ErrorHandling.CustomErrorListener;
 import LexerAndParser.AngularLexer;
 import LexerAndParser.AngularParser;
 import Visitor.BaseVisitor;
+import ErrorHandling.CustomErrorListener;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 
 public class Main {
 
-    static String inputFile = "D:\\F.I.T.E\\Fifth Year\\S2\\Compiler\\Last_Angular_Compiler\\src\\Tests\\test7.txt";
+    static String inputFile = "D:\\F.I.T.E\\Fifth Year\\S2\\Compiler\\Last_Angular_Compiler\\src\\Tests\\test2.txt";
     static String errorFile = "D:\\F.I.T.E\\Fifth Year\\S2\\Compiler\\Last_Angular_Compiler\\src\\Errors\\Errors.txt";
     static String outputFile = "D:\\F.I.T.E\\Fifth Year\\S2\\Compiler\\Last_Angular_Compiler\\src\\OutputFiles";
 
@@ -25,6 +25,7 @@ public class Main {
             AngularLexer lexer = new AngularLexer(input);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
 
+            // ✅ تفعيل نظام الأخطاء النحوية
             CustomErrorListener errorListener = new CustomErrorListener(errorFile);
             lexer.addErrorListener(errorListener);
 
@@ -39,18 +40,33 @@ public class Main {
             BaseVisitor visitor = new BaseVisitor();
             AST.Program ast = visitor.visitProg(parseTree);
 
-            // توليد الكود من AST
-            CodeGenerator generator = new CodeGenerator();
-            generator.emit(ast);
-            generator.writeToDisk(Paths.get(outputFile));
+            // ✅ التحقق من الأخطاء الدلالية قبل توليد الكود
+            System.out.println("\n" + "=".repeat(60));
+            System.out.println("🔍 SEMANTIC ERROR ANALYSIS");
+            System.out.println("=".repeat(60));
+
+            if (visitor.hasErrors()) {
+                visitor.printErrorReport();
+                System.err.println("❌ Compilation failed due to semantic errors.");
+                return; // إيقاف التوليد إذا كان هناك أخطاء
+            } else {
+                System.out.println("✅ No semantic errors found.");
+            }
 
             // ✅ طباعة Symbol Table هنا
             System.out.println("\n" + "=".repeat(60));
             System.out.println("📊 SYMBOL TABLE ANALYSIS");
             System.out.println("=".repeat(60));
-            visitor.symbolTable.print();
+            visitor.printSymbolTable();
 
+            // توليد الكود من AST
+            CodeGenerator generator = new CodeGenerator();
+            generator.emit(ast);
+            generator.writeToDisk(Paths.get(outputFile));
+
+            System.out.println("\n" + "=".repeat(60));
             System.out.println("✅ Code generation completed. Files written to: " + outputFile);
+            System.out.println("=".repeat(60));
 
         } catch (IOException e) {
             System.err.println("IO error: " + e.getMessage());
